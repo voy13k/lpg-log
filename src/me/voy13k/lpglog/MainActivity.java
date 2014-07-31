@@ -3,7 +3,7 @@ package me.voy13k.lpglog;
 import java.util.Locale;
 
 import me.voy13k.lpglog.LogFragment.OnFragmentInteractionListener;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -86,7 +86,8 @@ public class MainActivity extends ActionBarActivity implements
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_new) {
+			startActivity(new Intent(this, NewFillUpActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
