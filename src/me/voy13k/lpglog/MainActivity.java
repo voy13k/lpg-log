@@ -87,7 +87,7 @@ public class MainActivity extends ActionBarActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_new) {
-			startActivity(new Intent(this, NewFillUpActivity.class));
+			startActivity(new Intent(this, FillUpActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

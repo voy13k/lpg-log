@@ -9,12 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class NewFillUpActivity extends ActionBarActivity {
+public class FillUpActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_fill_up);
+		setContentView(R.layout.activity_fill_up);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
@@ -24,7 +24,7 @@ public class NewFillUpActivity extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.new_fill_up, menu);
+		getMenuInflater().inflate(R.menu.fill_up, menu);
 		return true;
 	}
 
@@ -56,7 +56,7 @@ public class NewFillUpActivity extends ActionBarActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_new_fill_up,
+			View rootView = inflater.inflate(R.layout.fragment_fill_up,
 					container, false);
 			return rootView;
 		}
