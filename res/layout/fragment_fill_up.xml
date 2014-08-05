@@ -10,5 +10,12 @@
     tools:context="me.voy13k.lpglog.NewFillUpActivity$PlaceholderFragment"
     android:orientation="vertical" >
 
+     <Button
+         android:id="@+id/editDate"
+         style="?android:attr/spinnerStyle"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:onClick="onEditDateClick" />
+
 </LinearLayout>
 
