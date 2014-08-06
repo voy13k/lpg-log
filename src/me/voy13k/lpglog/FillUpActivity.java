@@ -1,14 +1,12 @@
 package me.voy13k.lpglog;
 
 import me.voy13k.lpglog.util.ListenerRegistry;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
 
-public class FillUpActivity extends ActionBarActivity implements OnDateSetListener, ListenerRegistry.ListenerRegistryHost {
+public class FillUpActivity extends ActionBarActivity implements ListenerRegistry.ListenerRegistryHost {
 
 	private ListenerRegistry fragmentRegistry = new ListenerRegistry(1);
 
@@ -44,13 +42,6 @@ public class FillUpActivity extends ActionBarActivity implements OnDateSetListen
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onDateSet(DatePicker view, int year, int monthOfYear,
-			int dayOfMonth) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
