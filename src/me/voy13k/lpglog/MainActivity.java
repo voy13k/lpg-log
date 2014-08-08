@@ -123,9 +123,9 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	static final TabSection[] SECTIONS = {
-			new TabSection(R.string.title_section_log, LogFragment.class),
-			new TabSection(R.string.title_section_totals, TotalsFragment.class),
-			new TabSection(R.string.title_section_stats, StatsFragment.class), };
+			new TabSection(R.string.section_log, LogFragment.class),
+			new TabSection(R.string.section_totals, TotalsFragment.class),
+			new TabSection(R.string.section_stats, StatsFragment.class), };
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

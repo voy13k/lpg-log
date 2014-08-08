@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".FillUpActivity"
-            android:label="@string/title_activity_new_fill_up"
+            android:label="@string/activity_fill_up"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

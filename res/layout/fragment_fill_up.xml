@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        app:pickerTitle="@string/editDatePickerTitle" />
+        app:pickerTitle="@string/dialog_edit_date" />
 
     <TextView
         android:id="@+id/editDateLabel"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/editDate"
         android:layout_alignBaseline="@id/editDate"
-        android:text="@string/editDateLabel"
+        android:text="@string/field_edit_date"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
@@ -34,7 +34,6 @@
         android:layout_below="@id/editDate"
         android:layout_alignRight="@id/editDate"
         android:ems="3"
-        android:hint="@string/volume_units"
         android:inputType="numberDecimal" />
 
     <TextView
@@ -43,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/editVolume"
         android:layout_alignBaseline="@id/editVolume"
-        android:text="@string/volumeUsedLabel"
+        android:text="@string/fiels_volume_used"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
