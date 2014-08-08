@@ -9,11 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".FillUpActivity" >
 
-    <TableRow android:id="@+id/tableRowDate" >
+    <TableRow>
 
         <TextView
-            android:id="@+id/labelDate"
-            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
             android:text="@string/label_date"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -23,71 +22,71 @@
             app:pickerTitle="@string/dialog_edit_date" />
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowDistance" >
+    <TableRow>
 
         <TextView
-            android:id="@+id/labelDistance"
-            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
             android:text="@string/label_distance"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
             android:id="@+id/editDistance"
+            android:gravity="right"
             android:inputType="numberDecimal" >
 
             <requestFocus />
         </EditText>
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowLpgPrice" >
+    <TableRow>
 
         <TextView
-            android:id="@+id/labelLpgPrice"
-            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
             android:text="@string/label_lpg_price"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
             android:id="@+id/editLpgPrice"
+            android:gravity="right"
             android:inputType="numberDecimal" />
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowUnleadedPrice" >
+    <TableRow>
 
         <TextView
-            android:id="@+id/labelUnleadedPrice"
-            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
             android:text="@string/label_unleaded_price"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
             android:id="@+id/editUnleadedPrice"
+            android:gravity="right"
             android:inputType="numberDecimal" />
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowLpgVolume" >
+    <TableRow>
 
         <TextView
-            android:id="@+id/labelLpgVolume"
-            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
             android:text="@string/label_volume_used"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
             android:id="@+id/editLpgVolume"
+            android:gravity="right"
             android:inputType="numberDecimal" />
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowLpgCost" >
+    <TableRow>
 
         <TextView
-            android:id="@+id/labelLpgCost"
-            android:layout_gravity="right|center_vertical"
+            android:gravity="right"
             android:text="@string/label_lpg_cost"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
             android:id="@+id/editLpgCost"
+            android:gravity="right"
             android:inputType="numberDecimal" />
     </TableRow>
 
