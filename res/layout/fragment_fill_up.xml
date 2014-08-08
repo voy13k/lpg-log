@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/me.voy13k.lpglog"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,42 +7,88 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".FillUpActivity">
+    tools:context=".FillUpActivity" >
 
-    <me.voy13k.lpglog.widget.DatePickerButton
-        android:id="@+id/editDate"
-        style="?android:attr/spinnerStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        app:pickerTitle="@string/dialog_edit_date" />
+    <TableRow android:id="@+id/tableRowDate" >
 
-    <TextView
-        android:id="@+id/editDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/editDate"
-        android:layout_alignBaseline="@id/editDate"
-        android:text="@string/field_edit_date"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/labelDate"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/label_date"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <EditText
-        android:id="@+id/editVolume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editDate"
-        android:layout_alignRight="@id/editDate"
-        android:ems="3"
-        android:inputType="numberDecimal" />
+        <me.voy13k.lpglog.widget.DatePickerButton
+            android:id="@+id/editDate"
+            style="?android:attr/spinnerStyle"
+            app:pickerTitle="@string/dialog_edit_date" />
+    </TableRow>
 
-    <TextView
-        android:id="@+id/editVolumeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/editVolume"
-        android:layout_alignBaseline="@id/editVolume"
-        android:text="@string/fiels_volume_used"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <TableRow android:id="@+id/tableRowDistance" >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/labelDistance"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/label_distance"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/editDistance"
+            android:inputType="numberDecimal" >
+
+            <requestFocus />
+        </EditText>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowLpgPrice" >
+
+        <TextView
+            android:id="@+id/labelLpgPrice"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/label_lpg_price"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/editLpgPrice"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowUnleadedPrice" >
+
+        <TextView
+            android:id="@+id/labelUnleadedPrice"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/label_unleaded_price"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/editUnleadedPrice"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowLpgVolume" >
+
+        <TextView
+            android:id="@+id/labelLpgVolume"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/label_volume_used"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/editLpgVolume"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowLpgCost" >
+
+        <TextView
+            android:id="@+id/labelLpgCost"
+            android:layout_gravity="right|center_vertical"
+            android:text="@string/label_lpg_cost"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/editLpgCost"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+</TableLayout>

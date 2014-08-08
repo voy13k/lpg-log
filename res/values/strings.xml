@@ -13,7 +13,10 @@
     <string name="action_settings">Settings</string>
     <string name="unit_consumption">l/100km</string>
     <string name="unit_currency">$</string>
-    <string name="field_edit_date">Date filled up</string>
-    <string name="fiels_volume_used">LPG litres</string>
-
+    <string name="label_date">filled up on</string>
+    <string name="label_volume_used">LPG litres</string>
+    <string name="label_lpg_price">LPG price</string>
+    <string name="label_distance">kms</string>
+    <string name="label_unleaded_price">ULP price</string>
+	<string name="label_lpg_cost">LPG cost</string>
 </resources>
