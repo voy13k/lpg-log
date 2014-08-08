@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="DatePickerButton">
+        <attr name="pattern" format="string" />
+        <attr name="pickerTitle" format="string" />
+    </declare-styleable>
+
+</resources>
