@@ -2,7 +2,6 @@ package me.voy13k.lpglog;
 
 import java.util.Locale;
 
-import me.voy13k.lpglog.LogFragment.OnFragmentInteractionListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity implements
-		ActionBar.TabListener, OnFragmentInteractionListener {
+		ActionBar.TabListener, LogFragment.OnFragmentInteractionListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide

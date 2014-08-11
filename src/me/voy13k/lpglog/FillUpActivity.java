@@ -5,9 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class FillUpActivity extends ActionBarActivity implements FillUpFragment.Container {
-
-    FillUpFragment fillUpFragment;
+public class FillUpActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +31,8 @@ public class FillUpActivity extends ActionBarActivity implements FillUpFragment.
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_done) {
+            FillUpFragment fillUpFragment = (FillUpFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.container);
             fillUpFragment.onDone();
             finish();
             return true;
@@ -42,11 +42,6 @@ public class FillUpActivity extends ActionBarActivity implements FillUpFragment.
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void setFillUpFragment(FillUpFragment fragment) {
-        this.fillUpFragment = fragment;
     }
 
 }
