@@ -44,7 +44,7 @@ public class Data {
     private void recalculate() {
         double averageLpgConsumption = totalLpgVolume / totalDistance;
         double averageUlpConsumption = 10.5d / 100d;
-        double ulpToLpgRatio = averageLpgConsumption / averageUlpConsumption;
+        double ulpToLpgRatio = averageUlpConsumption / averageLpgConsumption;
 
         for (FillUpEntry entry : fillUpEntries) {
             double lpgVolume = entry.getLpgVolume();
