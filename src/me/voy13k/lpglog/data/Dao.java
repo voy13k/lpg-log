@@ -1,9 +1,5 @@
 package me.voy13k.lpglog.data;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import me.voy13k.lpglog.data.DbContract.FillUp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,64 +10,76 @@ public class Dao {
 
     private static Dao instance;
 
-    private SQLiteDatabase sqLiteDb;
-
-    public static synchronized Dao getInstance(Context c) {
+    public static synchronized Dao getInstance(Context context) {
         if (instance == null) {
-            instance = new Dao(c);
+            instance = new Dao(context);
         }
         return instance;
     }
 
-    public static synchronized void close() {
+    private static synchronized void close() {
+        if (instance == null) {
+            return;
+        }
         if (instance.sqLiteDb != null) {
             instance.sqLiteDb.close();
             instance.sqLiteDb = null;
-            instance = null;
         }
+        if (instance.openHelper != null) {
+            instance.openHelper.close();
+            instance.openHelper = null;
+        }
+        instance = null;
     }
+
+    private SQLiteDatabase sqLiteDb;
+    private SQLiteOpenHelper openHelper;
 
     public void save(FillUpEntry fillUpEntry) {
         ContentValues values = new ContentValues(5);
-        values.put(FillUp.COL_DATE, fillUpEntry.getDate().getTime());
-        values.put(FillUp.COL_DISTANCE, fillUpEntry.getDistance().toString());
-        values.put(FillUp.COL_LPG_PRICE, fillUpEntry.getLpgPrice().toString());
-        values.put(FillUp.COL_LPG_VOLUME, fillUpEntry.getLpgVolume().toString());
-        values.put(FillUp.COL_ULP_PRICE, fillUpEntry.getUlpPrice().toString());
-        sqLiteDb.insert(FillUp.TABLE_NAME, null, values);
+        values.put(FillUpEntry.COL_DATE, fillUpEntry.getDate());
+        values.put(FillUpEntry.COL_DISTANCE, fillUpEntry.getDistance());
+        values.put(FillUpEntry.COL_LPG_PRICE, fillUpEntry.getLpgPrice());
+        values.put(FillUpEntry.COL_LPG_VOLUME, fillUpEntry.getLpgVolume());
+        values.put(FillUpEntry.COL_ULP_PRICE, fillUpEntry.getUlpPrice());
+        sqLiteDb.insertWithOnConflict(FillUpEntry.TABLE_NAME, null, values,
+                SQLiteDatabase.CONFLICT_REPLACE);
     }
 
-    FillUpEntry[] loadFillUpEntries() {
-        Cursor cursor = sqLiteDb.query(FillUp.TABLE_NAME, FillUp.COLS, null, null, null, null,
-                FillUp.COL_DATE + " desc");
+    public interface OnLoadedListener<E> {
+        void onLoaded(E entry);
+    }
+
+    public void loadFillUpEntries(OnLoadedListener<FillUpEntry> listener) {
+        Cursor cursor = sqLiteDb.query(FillUpEntry.TABLE_NAME, FillUpEntry.COLS, null, null,
+                null, null, FillUpEntry.COL_DATE + " desc");
         try {
-            FillUpEntry[] entries = new FillUpEntry[cursor.getCount()];
-            for(int i = 0;!cursor.isAfterLast();cursor.moveToNext(),i++) {
-                entries[i] = readFillUpEntry(cursor);
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                listener.onLoaded(loadFillUpEntry(cursor));
             }
-            return entries;
         } finally {
             cursor.close();
         }
     }
 
-    private FillUpEntry readFillUpEntry(Cursor cursor) {
+    private FillUpEntry loadFillUpEntry(Cursor cursor) {
         FillUpEntry entry = new FillUpEntry();
-        entry.setDate(new Date(cursor.getLong(cursor.getColumnIndex(FillUp.COL_DATE))));
-        entry.setDistance(new BigDecimal(cursor.getString(cursor.getColumnIndex(FillUp.COL_DISTANCE))));
-        entry.setLpgPrice(new BigDecimal(cursor.getString(cursor.getColumnIndex(FillUp.COL_LPG_PRICE))));
-        entry.setLpgVolume(new BigDecimal(cursor.getString(cursor.getColumnIndex(FillUp.COL_LPG_VOLUME))));
-        entry.setUlpPrice(new BigDecimal(cursor.getString(cursor.getColumnIndex(FillUp.COL_ULP_PRICE))));
+        entry.setId(cursor.getLong(0));
+        entry.setDate(cursor.getLong(1));
+        entry.setDistance(cursor.getInt(2));
+        entry.setLpgPrice(cursor.getInt(3));
+        entry.setLpgVolume(cursor.getInt(4));
+        entry.setUlpPrice(cursor.getInt(5));
         return entry;
     }
 
     private Dao(Context context) {
-        SQLiteOpenHelper openHelper = new SQLiteOpenHelper(context, DbContract.DB_NAME, null,
+        openHelper = new SQLiteOpenHelper(context, DbContract.DB_NAME, null,
                 DbContract.DB_VERSION) {
 
             @Override
             public void onCreate(SQLiteDatabase db) {
-                db.execSQL(FillUp.TABLE_CREATE);
+                db.execSQL(FillUpEntry.TABLE_CREATE);
             }
 
             @Override
@@ -79,11 +87,7 @@ public class Dao {
                 // Version 1 - no updates required
             }
         };
-        try {
-            sqLiteDb = openHelper.getWritableDatabase();
-        } finally {
-            openHelper.close();
-        }
+        sqLiteDb = openHelper.getWritableDatabase();
     }
 
 }

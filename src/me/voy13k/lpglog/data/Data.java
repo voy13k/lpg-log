@@ -1,31 +1,73 @@
 package me.voy13k.lpglog.data;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.provider.BaseColumns;
+import android.content.Context;
+import android.util.Log;
+import android.util.LogPrinter;
 
 public class Data {
 
-	private static final String[] CURSOR_COLUMN_NAMES = { BaseColumns._ID,
-			"date", "gasConsumption", "savings" };
+    private static final LogPrinter INFO = new LogPrinter(Log.INFO,
+            Data.class.getCanonicalName());
 
-	public static final String[] COLUMN_NAMES = Arrays.copyOfRange(
-			CURSOR_COLUMN_NAMES, 1, CURSOR_COLUMN_NAMES.length);
+    private static Data theInstance;
 
-	public static Cursor getCursor() {
-		MatrixCursor matrixCursor = new MatrixCursor(CURSOR_COLUMN_NAMES);
-		matrixCursor.newRow().add("11").add("28/07/2014").add("13.4").add("19.53");
-		matrixCursor.newRow().add("22").add("21/07/2014").add("13.2").add("18.53");
-		matrixCursor.newRow().add("33").add("14/07/2014").add("13.0").add("17.53");
-		matrixCursor.newRow().add("44").add("07/07/2014").add("13.0").add("16.53");
-		matrixCursor.newRow().add("55").add("30/06/2014").add("13.1").add("15.53");
-		matrixCursor.newRow().add("66").add("23/06/2014").add("12.7").add("14.53");
-		matrixCursor.newRow().add("77").add("16/06/2014").add("13.2").add("13.53");
-		matrixCursor.newRow().add("88").add("09/06/2014").add("13.0").add("12.53");
-		matrixCursor.newRow().add("99").add("02/06/2014").add("13.1").add("11.53");
-		return matrixCursor;
-	}
+    public static synchronized Data getInstance(Context context) {
+        if (theInstance == null) {
+            theInstance = new Data(context);
+        }
+        return theInstance;
+    }
+
+    public static synchronized void reload() {
+        theInstance = null;
+        INFO.println("reloaded");
+    }
+
+    private List<FillUpEntry> fillUpEntries;
+
+    private double totalDistance; // m
+    private double totalLpgVolume; // ml
+
+    private Data(Context context) {
+        fillUpEntries = new ArrayList<FillUpEntry>();
+        load(context);
+        recalculate();
+    }
+
+    public List<FillUpEntry> getFillUpEntries() {
+        return fillUpEntries;
+    }
+
+    private void recalculate() {
+        double averageLpgConsumption = totalLpgVolume / totalDistance;
+        double averageUlpConsumption = 10.5d / 100d;
+        double ulpToLpgRatio = averageLpgConsumption / averageUlpConsumption;
+
+        for (FillUpEntry entry : fillUpEntries) {
+            double lpgVolume = entry.getLpgVolume();
+            double lpgCost = 0.001 * lpgVolume * entry.getLpgPrice();
+            double ulpCost = 0.001 * lpgVolume * ulpToLpgRatio * entry.getUlpPrice();
+            entry.setSaving(toInt(ulpCost - lpgCost));
+            entry.setLpgConsumption(lpgVolume / entry.getDistance());
+        }
+    }
+
+    private int toInt(Double d) {
+        return d.intValue();
+    }
+
+    private void load(Context context) {
+        Dao.getInstance(context).loadFillUpEntries(new Dao.OnLoadedListener<FillUpEntry>() {
+            @Override
+            public void onLoaded(FillUpEntry entry) {
+                fillUpEntries.add(entry);
+                totalDistance += entry.getDistance();
+                totalLpgVolume += entry.getLpgVolume();
+            }
+        });
+    }
 
 }

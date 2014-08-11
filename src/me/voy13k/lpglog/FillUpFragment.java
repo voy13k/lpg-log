@@ -1,20 +1,16 @@
 package me.voy13k.lpglog;
 
-import java.math.BigDecimal;
-
+import me.voy13k.lpglog.data.Dao;
+import me.voy13k.lpglog.data.Data;
 import me.voy13k.lpglog.data.FillUpEntry;
 import me.voy13k.lpglog.widget.DatePickerButton;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class FillUpFragment extends Fragment {
 
     @Override
@@ -26,25 +22,30 @@ public class FillUpFragment extends Fragment {
 
     public void onDone() {
         FillUpEntry entry = new FillUpEntry();
-        entry.setDate(getDatePickerButton(R.id.editDate).getCalendar().getTime());
-        entry.setDistance(getBigDecimal(R.id.editDistance));
-        entry.setLpgPrice(getBigDecimal(R.id.editLpgPrice));
-        entry.setLpgVolume(getBigDecimal(R.id.editLpgVolume));
-        entry.setUlpPrice(getBigDecimal(R.id.editUnleadedPrice));
+        entry.setDate(getDatePickerButton(R.id.editDate).getCalendar().getTimeInMillis());
+        entry.setDistance(toInt(getDouble(R.id.editDistance) * 1000));
+        entry.setLpgPrice(toInt(getDouble(R.id.editLpgPrice) * 10));
+        entry.setLpgVolume(toInt(getDouble(R.id.editLpgVolume) * 1000));
+        entry.setUlpPrice(toInt(getDouble(R.id.editUnleadedPrice) * 10));
         save(entry);
     }
 
-    private void save(FillUpEntry entry) {
-        Log.i(FillUpFragment.class.getCanonicalName(), entry.toString());
+    private int toInt(Double d) {
+        return d.intValue();
     }
 
-    private BigDecimal getBigDecimal(int id) {
-        TextView textView = (TextView)getActivity().findViewById(id);
-        return new BigDecimal(textView.getText().toString());
+    private void save(FillUpEntry entry) {
+        Dao.getInstance(getActivity()).save(entry);
+        Data.reload();
+    }
+
+    private double getDouble(int textViewId) {
+        TextView textView = (TextView) getActivity().findViewById(textViewId);
+        return Double.parseDouble(textView.getText().toString());
     }
 
     private DatePickerButton getDatePickerButton(int id) {
-        return (DatePickerButton)getActivity().findViewById(id);
+        return (DatePickerButton) getActivity().findViewById(id);
     }
 
 }

@@ -1,9 +1,18 @@
 package me.voy13k.lpglog;
 
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Locale;
+
 import me.voy13k.lpglog.data.Data;
+import me.voy13k.lpglog.data.FillUpEntry;
 import android.app.Activity;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
@@ -18,8 +27,16 @@ import android.widget.ListView;
  */
 public class LogFragment extends ListFragment {
 
-	private static final int[] LOG_ITEM_VIEW_IDS = { R.id.date,
-			R.id.gasConsupmtion, R.id.saving };
+	private static final int[] LOG_ITEM_VIEW_IDS = { R.id.date, R.id.gasConsupmtion, R.id.saving };
+    private static final String[] CURSOR_COLUMN_NAMES = { BaseColumns._ID, "d", "c", "s" };
+    private static final String[] COLUMN_NAMES = Arrays.copyOfRange(CURSOR_COLUMN_NAMES, 1,
+        CURSOR_COLUMN_NAMES.length);
+
+	private static final Format FORMAT_DATE = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+    private static final Format FORMAT_CONSUMPTION = new DecimalFormat("0.0");
+    private static final Format FORMAT_SAVINGS = new DecimalFormat("0.00");
+
+
 	private OnFragmentInteractionListener mListener;
 
 	/**
@@ -33,14 +50,21 @@ public class LogFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// TODO: Change Adapter to display your content
 		setListAdapter(new SimpleCursorAdapter(getActivity(),
-				R.layout.list_item_log, getData(), Data.COLUMN_NAMES,
+				R.layout.list_item_log, getLogDataCursor(), COLUMN_NAMES,
 				LOG_ITEM_VIEW_IDS, 0));
 	}
 
-	private Cursor getData() {
-		return Data.getCursor();
+	private Cursor getLogDataCursor() {
+		MatrixCursor matrixCursor = new MatrixCursor(CURSOR_COLUMN_NAMES);
+        for (FillUpEntry entry: Data.getInstance(getActivity()).getFillUpEntries()) {
+            matrixCursor.newRow()
+                    .add(entry.getId())
+                    .add(FORMAT_DATE.format(entry.getDate()))
+                    .add(FORMAT_CONSUMPTION.format(100 * entry.getLpgConsumption()))
+                    .add(FORMAT_SAVINGS.format(0.001 * entry.getSaving()));
+        }
+        return matrixCursor;
 	}
 
 	@Override
