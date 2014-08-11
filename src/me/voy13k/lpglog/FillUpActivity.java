@@ -1,5 +1,6 @@
 package me.voy13k.lpglog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -34,7 +35,10 @@ public class FillUpActivity extends ActionBarActivity {
             FillUpFragment fillUpFragment = (FillUpFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.container);
             fillUpFragment.onDone();
-            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            // This should cause the MainActivity to be re-created, so that new data is loaded.
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.action_cancel) {
