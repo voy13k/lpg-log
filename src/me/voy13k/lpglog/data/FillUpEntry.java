@@ -2,7 +2,10 @@ package me.voy13k.lpglog.data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
+
+import android.text.format.DateFormat;
 
 public class FillUpEntry implements Serializable {
 
@@ -57,6 +60,6 @@ public class FillUpEntry implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("{0} {1} {2} {3} {4}", date.getTime(), distance, lpgPrice, ulpPrice, lpgVolume);
+        return MessageFormat.format("{0} {1} {2} {3} {4}", DateFormat.format("yyyy:MM:dd", date), distance, lpgPrice, ulpPrice, lpgVolume);
     }
 }
