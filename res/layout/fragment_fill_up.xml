@@ -77,17 +77,4 @@
             android:inputType="numberDecimal" />
     </TableRow>
 
-    <TableRow>
-
-        <TextView
-            android:gravity="right"
-            android:text="@string/label_lpg_cost"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <EditText
-            android:id="@+id/editLpgCost"
-            android:gravity="right"
-            android:inputType="numberDecimal" />
-    </TableRow>
-
 </TableLayout>
