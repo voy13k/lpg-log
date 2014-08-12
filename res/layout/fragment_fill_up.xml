@@ -17,7 +17,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <me.voy13k.lpglog.widget.DatePickerButton
-            android:id="@+id/editDate"
+            android:id="@+id/buttonDate"
             style="?android:attr/spinnerStyle"
             app:pickerTitle="@string/dialog_edit_date" />
     </TableRow>
@@ -59,7 +59,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
-            android:id="@+id/editUnleadedPrice"
+            android:id="@+id/editUlpPrice"
             android:gravity="right"
             android:inputType="numberDecimal" />
     </TableRow>

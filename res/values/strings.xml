@@ -18,4 +18,6 @@
     <string name="label_lpg_price">LPG price</string>
     <string name="label_distance">kms</string>
     <string name="label_unleaded_price">ULP price</string>
+    <string name="message_save_failed">No blanks or zeroes!</string>
+    <string name="message_save_success">Record saved.</string>
 </resources>

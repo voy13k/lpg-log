@@ -9,43 +9,68 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class FillUpFragment extends Fragment {
+
+    private DatePickerButton buttonDate;
+    private EditText editDistance;
+    private EditText editLpgPrice;
+    private EditText editUlpPrice;
+    private EditText editLpgVolume;
+
+    public FillUpFragment() {
+        // Do NOT overload the default constructor.
+        // This is framework requirement.
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_fill_up, container, false);
+        buttonDate = (DatePickerButton) rootView.findViewById(R.id.buttonDate);
+        editDistance = (EditText) rootView.findViewById(R.id.editDistance);
+        editLpgPrice = (EditText) rootView.findViewById(R.id.editLpgPrice);
+        editUlpPrice = (EditText) rootView.findViewById(R.id.editUlpPrice);
+        editLpgVolume = (EditText) rootView.findViewById(R.id.editLpgVolume);
         return rootView;
     }
 
-    public void onDone() {
+    public boolean save() {
+        if (!isFormDataValid()) {
+            return false;
+        }
         FillUpEntry entry = new FillUpEntry();
-        entry.setDate(getDatePickerButton(R.id.editDate).getCalendar().getTimeInMillis());
-        entry.setDistance(toInt(getDouble(R.id.editDistance) * 1000));
-        entry.setLpgPrice(toInt(getDouble(R.id.editLpgPrice) * 10));
-        entry.setLpgVolume(toInt(getDouble(R.id.editLpgVolume) * 1000));
-        entry.setUlpPrice(toInt(getDouble(R.id.editUnleadedPrice) * 10));
-        save(entry);
+        entry.setDate(buttonDate.getCalendar().getTimeInMillis());
+        entry.setDistance(toInt(getDouble(editDistance) * 1000));
+        entry.setLpgPrice(toInt(getDouble(editLpgPrice) * 10));
+        entry.setLpgVolume(toInt(getDouble(editLpgVolume) * 1000));
+        entry.setUlpPrice(toInt(getDouble(editUlpPrice) * 10));
+        Dao.getInstance(getActivity()).save(entry);
+        Data.reload();
+        return true;
+    }
+
+    private boolean isFormDataValid() {
+        return isValid(editLpgVolume) && isValid(editUlpPrice) && isValid(editLpgPrice)
+                && isValid(editDistance);
+    }
+
+    private boolean isValid(EditText editText) {
+        try {
+            return getDouble(editText) > 0.0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private int toInt(Double d) {
         return d.intValue();
     }
 
-    private void save(FillUpEntry entry) {
-        Dao.getInstance(getActivity()).save(entry);
-        Data.reload();
-    }
-
-    private double getDouble(int textViewId) {
-        TextView textView = (TextView) getActivity().findViewById(textViewId);
+    private double getDouble(TextView textView) {
         return Double.parseDouble(textView.getText().toString());
-    }
-
-    private DatePickerButton getDatePickerButton(int id) {
-        return (DatePickerButton) getActivity().findViewById(id);
     }
 
 }

@@ -3,8 +3,10 @@ package me.voy13k.lpglog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class FillUpActivity extends ActionBarActivity {
 
@@ -34,11 +36,12 @@ public class FillUpActivity extends ActionBarActivity {
         if (id == R.id.action_done) {
             FillUpFragment fillUpFragment = (FillUpFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.container);
-            fillUpFragment.onDone();
-            Intent intent = new Intent(this, MainActivity.class);
-            // This should cause the MainActivity to be re-created, so that new data is loaded.
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            if (fillUpFragment.save()) {
+                showSuccess();
+                restartMainAction();
+            } else {
+                showError();
+            }
             return true;
         }
         if (id == R.id.action_cancel) {
@@ -46,6 +49,26 @@ public class FillUpActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSuccess() {
+        Toast.makeText(this, getResources().getText(R.string.message_save_success),
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void showError() {
+        Toast toast = Toast.makeText(this,
+                getResources().getText(R.string.message_save_failed), Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP | Gravity.RIGHT, 0, 0);
+        toast.show();
+    }
+
+    private void restartMainAction() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // This should cause the MainActivity to be re-created, so that
+        // new data is loaded.
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
 }
