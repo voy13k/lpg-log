@@ -25,6 +25,7 @@
         <activity
             android:name=".FillUpActivity"
             android:label="@string/activity_fill_up"
+            android:windowSoftInputMode="stateVisible"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
