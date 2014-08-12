@@ -15,8 +15,9 @@ public class FillUpActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_up);
         if (savedInstanceState == null) {
+            Long entryId = getIntent().getLongExtra(FillUpFragment.ARG_ENTRY_ID, 0);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new FillUpFragment()).commit();
+                    .add(R.id.container, FillUpFragment.newInstance(entryId)).commit();
         }
     }
 

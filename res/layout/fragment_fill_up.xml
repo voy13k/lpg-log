@@ -32,10 +32,8 @@
         <EditText
             android:id="@+id/editDistance"
             android:gravity="right"
-            android:inputType="numberDecimal" >
-
-            <requestFocus />
-        </EditText>
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true" />
     </TableRow>
 
     <TableRow>
@@ -48,7 +46,8 @@
         <EditText
             android:id="@+id/editLpgPrice"
             android:gravity="right"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true" />
     </TableRow>
 
     <TableRow>
@@ -61,7 +60,8 @@
         <EditText
             android:id="@+id/editUlpPrice"
             android:gravity="right"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true" />
     </TableRow>
 
     <TableRow>
@@ -74,7 +74,8 @@
         <EditText
             android:id="@+id/editLpgVolume"
             android:gravity="right"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true" />
     </TableRow>
 
 </TableLayout>

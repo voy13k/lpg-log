@@ -89,9 +89,7 @@ public class LogFragment extends ListFragment {
 		super.onListItemClick(l, v, position, id);
 
 		if (null != mListener) {
-			// Notify the active callbacks interface (the activity, if the
-			// fragment is attached to one) that an item has been selected.
-			mListener.onFragmentInteraction(String.valueOf(position));
+			mListener.onFillUpEntryClick(id);
 		}
 	}
 
@@ -105,8 +103,7 @@ public class LogFragment extends ListFragment {
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnFragmentInteractionListener {
-		// TODO: Update argument type and name
-		public void onFragmentInteraction(String id);
+		public void onFillUpEntryClick(long entryId);
 	}
 
 }

@@ -37,6 +37,10 @@ public class Dao {
 
     public void save(FillUpEntry fillUpEntry) {
         ContentValues values = new ContentValues(5);
+        long entryId = fillUpEntry.getId();
+        if (entryId != 0) {
+            values.put(FillUpEntry._ID, entryId);
+        }
         values.put(FillUpEntry.COL_DATE, fillUpEntry.getDate());
         values.put(FillUpEntry.COL_DISTANCE, fillUpEntry.getDistance());
         values.put(FillUpEntry.COL_LPG_PRICE, fillUpEntry.getLpgPrice());

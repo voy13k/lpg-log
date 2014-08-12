@@ -158,8 +158,10 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onFragmentInteraction(String id) {
-		// TODO: edit activity
+	public void onFillUpEntryClick(long entryId) {
+		Intent intent = new Intent(this, FillUpActivity.class);
+		intent.putExtra(FillUpFragment.ARG_ENTRY_ID, entryId);
+		startActivity(intent);
 	}
 
 }

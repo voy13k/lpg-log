@@ -2,7 +2,7 @@ package me.voy13k.lpglog.data;
 
 import android.provider.BaseColumns;
 
-interface DbContract extends BaseColumns {
+interface DbContract {
 
     String TYPE_NUMERIC = " NUMERIC";
     String SEP_COMMA = ",";
@@ -10,7 +10,7 @@ interface DbContract extends BaseColumns {
     String DB_NAME = "LPGLog.db";
     int DB_VERSION = 1;
 
-    interface FillUp {
+    interface FillUp extends BaseColumns {
         String TABLE_NAME = "fill_up";
 
         String COL_DATE = "date";

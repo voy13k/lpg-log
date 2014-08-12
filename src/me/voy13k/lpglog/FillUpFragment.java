@@ -1,5 +1,7 @@
 package me.voy13k.lpglog;
 
+import java.util.Calendar;
+
 import me.voy13k.lpglog.data.Dao;
 import me.voy13k.lpglog.data.Data;
 import me.voy13k.lpglog.data.FillUpEntry;
@@ -14,11 +16,24 @@ import android.widget.TextView;
 
 public class FillUpFragment extends Fragment {
 
+    public static final String ARG_ENTRY_ID = "entryId";
+
     private DatePickerButton buttonDate;
     private EditText editDistance;
     private EditText editLpgPrice;
     private EditText editUlpPrice;
     private EditText editLpgVolume;
+    private long entryId;
+
+    public static FillUpFragment newInstance(Long entryId) {
+        Bundle args = new Bundle();
+        if (entryId != null) {
+            args.putLong(ARG_ENTRY_ID, entryId);
+        }
+        FillUpFragment fillUpFragment = new FillUpFragment();
+        fillUpFragment.setArguments(args);
+        return fillUpFragment;
+    }
 
     public FillUpFragment() {
         // Do NOT overload the default constructor.
@@ -34,7 +49,28 @@ public class FillUpFragment extends Fragment {
         editLpgPrice = (EditText) rootView.findViewById(R.id.editLpgPrice);
         editUlpPrice = (EditText) rootView.findViewById(R.id.editUlpPrice);
         editLpgVolume = (EditText) rootView.findViewById(R.id.editLpgVolume);
+        entryId = getArguments().getLong(ARG_ENTRY_ID, 0);
+        fillFromDb();
+        editDistance.requestFocus();
         return rootView;
+    }
+
+    private void fillFromDb() {
+        if (entryId == 0) {
+            return;
+        }
+        for (FillUpEntry entry: Data.getInstance(getActivity()).getFillUpEntries()) {
+            if (entry.getId() == entryId) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(entry.getDate());
+                buttonDate.setCalendar(cal);
+                editDistance.setText(String.valueOf(entry.getDistance() / 1000.0));
+                editLpgPrice.setText(String.valueOf(entry.getLpgPrice() / 10.0));
+                editLpgVolume.setText(String.valueOf(entry.getLpgVolume() / 1000.0));
+                editUlpPrice.setText(String.valueOf(entry.getUlpPrice() / 10.0));
+                break;
+            }
+        }
     }
 
     public boolean save() {
@@ -42,6 +78,7 @@ public class FillUpFragment extends Fragment {
             return false;
         }
         FillUpEntry entry = new FillUpEntry();
+        entry.setId(entryId);
         entry.setDate(buttonDate.getCalendar().getTimeInMillis());
         entry.setDistance(toInt(getDouble(editDistance) * 1000));
         entry.setLpgPrice(toInt(getDouble(editLpgPrice) * 10));
