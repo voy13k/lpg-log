@@ -14,6 +14,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -51,6 +53,19 @@ public class DatePickerButton extends Button {
     public DatePickerButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        return new SavedState(superState, calendar);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        setCalendar(savedState.calendar);
     }
 
     public Calendar getCalendar() {
@@ -103,7 +118,7 @@ public class DatePickerButton extends Button {
         setText(labelFormat.format(calendar.getTime()));
     }
 
-    private static class PickerFragment extends DialogFragment {
+    public static class PickerFragment extends DialogFragment {
 
         private static final String ARG_CALENDAR = "calendar";
         private static final String ARG_BUTTON_ID = "buttonId";
@@ -155,4 +170,48 @@ public class DatePickerButton extends Button {
 
     }
 
+    public static class SavedState extends BaseSavedState {
+
+        Calendar calendar;
+
+        /**
+         * This to create saveable state (calendar) on top of base state
+         * (superState)
+         */
+        private SavedState(Parcelable superState, Calendar calendar) {
+            super(superState);
+            this.calendar = calendar;
+        }
+
+        /**
+         * This to restore
+         */
+        private SavedState(Parcel in) {
+            super(in);
+            calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(in.readLong());
+        }
+
+        /**
+         * This to write the state.
+         */
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeLong(calendar.getTimeInMillis());
+        }
+
+        /**
+         * Boilerplate to allow framework to instantiate this state object
+         */
+        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+    }
 }
