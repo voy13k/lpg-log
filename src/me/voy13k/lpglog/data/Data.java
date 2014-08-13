@@ -31,28 +31,55 @@ public class Data {
     private double totalDistance; // m
     private double totalLpgVolume; // ml
 
+    private int totalSavings;
+
+    private boolean loaded;
+
+    private boolean calculated;
+
     private Data(Context context) {
         fillUpEntries = new ArrayList<FillUpEntry>();
         load(context);
-        recalculate();
+        calculate();
     }
 
     public List<FillUpEntry> getFillUpEntries() {
+        verify(calculated);
         return fillUpEntries;
     }
 
-    private void recalculate() {
-        double averageLpgConsumption = totalLpgVolume / totalDistance;
-        double averageUlpConsumption = 10.5d / 100d;
+    public double getAverageLpgConsumption() {
+        verify(loaded);
+        return 100.0 * totalLpgVolume / totalDistance;
+    }
+    
+    public double getTotalSavings() {
+        verify(calculated);
+        return totalSavings / 1000.0;
+    }
+    
+    private void verify(boolean flag) {
+        if (!flag) {
+            throw new IllegalStateException();
+        }
+    }
+
+    private void calculate() {
+        double averageLpgConsumption = getAverageLpgConsumption();
+        double averageUlpConsumption = 10.5d;
         double ulpToLpgRatio = averageUlpConsumption / averageLpgConsumption;
 
         for (FillUpEntry entry : fillUpEntries) {
             double lpgVolume = entry.getLpgVolume();
             double lpgCost = 0.001 * lpgVolume * entry.getLpgPrice();
             double ulpCost = 0.001 * lpgVolume * ulpToLpgRatio * entry.getUlpPrice();
-            entry.setSaving(toInt(ulpCost - lpgCost));
-            entry.setLpgConsumption(lpgVolume / entry.getDistance());
+            int saving = toInt(ulpCost - lpgCost);
+            totalSavings += saving;
+            entry.setSaving(saving);
+            double lpgConsumption = lpgVolume / entry.getDistance();
+            entry.setLpgConsumption(lpgConsumption);
         }
+        calculated = true;
     }
 
     private int toInt(Double d) {
@@ -68,6 +95,7 @@ public class Data {
                 totalLpgVolume += entry.getLpgVolume();
             }
         });
+        loaded = true;
     }
 
 }
