@@ -11,13 +11,17 @@
     <string name="action_done">Done</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_settings">Settings</string>
-    <string name="unit_consumption">l/100km</string>
+    <string name="unit_consumption">ltr/100km</string>
     <string name="unit_currency">$</string>
     <string name="label_date">filled up on</string>
-    <string name="label_volume_used">LPG litres</string>
+    <string name="label_distance">after driving</string>
+    <string name="hint_distance">kms</string>
     <string name="label_lpg_price">LPG price</string>
-    <string name="label_distance">kms</string>
-    <string name="label_unleaded_price">ULP price</string>
+    <string name="label_unleaded_price">unleaded price</string>
+    <string name="hint_price">cents per litre</string>
+    <string name="label_volume_used">LPG filled</string>
+    <string name="hint_volume">litres</string>
     <string name="message_save_failed">No blanks or zeroes!</string>
     <string name="message_save_success">Record saved.</string>
+
 </resources>
