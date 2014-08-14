@@ -109,8 +109,19 @@ public class Dao {
             new Upgrade() {
                 @Override
                 public void run(SQLiteDatabase db) {
-                    db.execSQL(DbContract.FillUp.UPDATE_1_2);
+                    runUpdates(db, DbContract.FillUp.UPDATE_V1V2);
+                }
+            },
+            new Upgrade() {
+                @Override
+                public void run(SQLiteDatabase db) {
+                    runUpdates(db, DbContract.FillUp.UPDATE_V2V3);
                 }
             },
     };
+    private void runUpdates(SQLiteDatabase db, String...sqls) {
+        for (String sql : sqls) {
+            db.execSQL(sql);
+        }
+    }
 }

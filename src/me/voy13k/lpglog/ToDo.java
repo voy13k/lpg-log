@@ -7,6 +7,4 @@ public class ToDo {
     private int fillUpFixHorizontalInputLabels;
     private int fillUpTitleNewOrEdit;
     private int daoAndDataRethink;
-    private int dbUnitsStored;
-    private int totalsCurrencyUnit;
 }
