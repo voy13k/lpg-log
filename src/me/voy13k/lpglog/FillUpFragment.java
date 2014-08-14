@@ -66,7 +66,7 @@ public class FillUpFragment extends Fragment {
                 buttonDate.setCalendar(cal);
                 editDistance.setText(Format.DISTANCE.format(entry.getDistance()));
                 editLpgPrice.setText(Format.CENTS.format(entry.getLpgPrice() * 100));
-                editLpgVolume.setText(Format.CONSUMPTION.format(entry.getLpgVolume()));
+                editLpgVolume.setText(Format.VOLUME.format(entry.getLpgVolume()));
                 editUlpPrice.setText(Format.CENTS.format(entry.getUlpPrice() * 100));
                 break;
             }

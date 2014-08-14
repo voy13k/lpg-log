@@ -42,12 +42,16 @@ public class Dao {
             values.put(FillUpEntry._ID, entryId);
         }
         values.put(FillUpEntry.COL_DATE, fillUpEntry.getDate());
-        values.put(FillUpEntry.COL_DISTANCE, fillUpEntry.getDistance());
-        values.put(FillUpEntry.COL_LPG_PRICE, fillUpEntry.getLpgPrice());
-        values.put(FillUpEntry.COL_LPG_VOLUME, fillUpEntry.getLpgVolume());
-        values.put(FillUpEntry.COL_ULP_PRICE, fillUpEntry.getUlpPrice());
+        values.put(FillUpEntry.COL_DISTANCE, toInt(fillUpEntry.getDistance()*1000));
+        values.put(FillUpEntry.COL_LPG_PRICE, toInt(fillUpEntry.getLpgPrice()*1000));
+        values.put(FillUpEntry.COL_LPG_VOLUME, toInt(fillUpEntry.getLpgVolume()*1000));
+        values.put(FillUpEntry.COL_ULP_PRICE, toInt(fillUpEntry.getUlpPrice()*1000));
         sqLiteDb.insertWithOnConflict(FillUpEntry.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    private int toInt(Float f) {
+        return f.intValue();
     }
 
     public interface OnLoadedListener<E> {
@@ -70,10 +74,10 @@ public class Dao {
         FillUpEntry entry = new FillUpEntry();
         entry.setId(cursor.getLong(0));
         entry.setDate(cursor.getLong(1));
-        entry.setDistance(cursor.getFloat(2));
-        entry.setLpgPrice(cursor.getFloat(3));
-        entry.setLpgVolume(cursor.getFloat(4));
-        entry.setUlpPrice(cursor.getFloat(5));
+        entry.setDistance(cursor.getInt(2)/1000f);
+        entry.setLpgPrice(cursor.getInt(3)/1000f);
+        entry.setLpgVolume(cursor.getInt(4)/1000f);
+        entry.setUlpPrice(cursor.getInt(5)/1000f);
         return entry;
     }
 
@@ -89,39 +93,12 @@ public class Dao {
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
                 for (int version = oldVersion; version < newVersion; version++) {
-                    upgrades[version].run(db);
+                    for (String versionUpgradeSql : DbContract.UPGRADE_SQL[version]) {
+                        db.execSQL(versionUpgradeSql);
+                    }
                 }
             }
         };
         sqLiteDb = openHelper.getWritableDatabase();
-    }
-
-    private interface Upgrade {
-        void run(SQLiteDatabase db); 
-    }
-
-    private Upgrade[] upgrades = {
-            new Upgrade() {
-                @Override
-                public void run(SQLiteDatabase db) {
-                }
-            },
-            new Upgrade() {
-                @Override
-                public void run(SQLiteDatabase db) {
-                    runUpdates(db, DbContract.FillUp.UPDATE_V1V2);
-                }
-            },
-            new Upgrade() {
-                @Override
-                public void run(SQLiteDatabase db) {
-                    runUpdates(db, DbContract.FillUp.UPDATE_V2V3);
-                }
-            },
-    };
-    private void runUpdates(SQLiteDatabase db, String...sqls) {
-        for (String sql : sqls) {
-            db.execSQL(sql);
-        }
     }
 }
