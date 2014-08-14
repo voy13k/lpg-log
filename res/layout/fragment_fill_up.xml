@@ -12,10 +12,9 @@
     <TableRow>
 
         <TextView
+            style="@style/FillUp.Label"
             android:layout_gravity="center_vertical"
-            android:gravity="right"
-            android:text="@string/label_date"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:text="@string/label_date" />
 
         <me.voy13k.lpglog.widget.DatePickerButton
             android:id="@+id/buttonDate"
@@ -28,82 +27,69 @@
     <TableRow>
 
         <TextView
-            android:gravity="right"
-            android:text="@string/label_distance"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            style="@style/FillUp.Label"
+            android:text="@string/label_distance" />
 
         <EditText
             android:id="@+id/editDistance"
-            android:gravity="right"
+            style="@style/FillUp.Edit"
             android:inputType="numberDecimal"
-            android:ems="4"
-            android:selectAllOnFocus="true" />
+            android:text="@string/stub_distance" />
 
         <TextView
-            android:gravity="left"
-            android:text="@string/hint_distance"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="italic" />
+            style="@style/FillUp.Unit"
+            android:text="@string/hint_distance" />
     </TableRow>
 
     <TableRow>
 
         <TextView
-            android:gravity="right"
-            android:text="@string/label_lpg_price"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            style="@style/FillUp.Label"
+            android:text="@string/label_lpg_price" />
 
         <EditText
             android:id="@+id/editLpgPrice"
-            android:gravity="right"
+            style="@style/FillUp.Edit"
             android:inputType="numberDecimal"
-            android:selectAllOnFocus="true" />
+            android:text="@string/stub_lpg_price" />
 
         <TextView
-            android:gravity="left"
-            android:text="@string/hint_price"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="italic" />
+            style="@style/FillUp.Unit"
+            android:text="@string/hint_price" />
     </TableRow>
 
     <TableRow>
 
         <TextView
-            android:gravity="right"
-            android:text="@string/label_unleaded_price"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            style="@style/FillUp.Label"
+            android:text="@string/label_unleaded_price" />
 
         <EditText
             android:id="@+id/editUlpPrice"
-            android:gravity="right"
+            style="@style/FillUp.Edit"
             android:inputType="numberDecimal"
-            android:selectAllOnFocus="true" />
+            android:text="@string/stub_ulp_price" />
 
         <TextView
-            android:gravity="left"
-            android:text="@string/hint_price"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="italic" />
+            style="@style/FillUp.Unit"
+            android:text="@string/hint_price" />
     </TableRow>
 
     <TableRow>
 
         <TextView
-            android:gravity="right"
-            android:text="@string/label_volume_used"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            style="@style/FillUp.Label"
+            android:text="@string/label_volume_used" />
 
         <EditText
             android:id="@+id/editLpgVolume"
-            android:gravity="right"
+            style="@style/FillUp.Edit"
             android:inputType="numberDecimal"
-            android:selectAllOnFocus="true" />
+            android:text="@string/stub_lpg_volume" />
 
         <TextView
-            android:gravity="left"
-            android:text="@string/hint_volume"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="italic" />
+            style="@style/FillUp.Unit"
+            android:text="@string/hint_volume" />
     </TableRow>
 
 </TableLayout>

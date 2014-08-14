@@ -2,9 +2,11 @@ package me.voy13k.lpglog;
 
 public class ToDo {
 
-    private int applyCommonStylesToFillUp;
-    private int fixStylingOnLog;
-    private int addYearSectionsOnLog;
-    private int fixHorizontalInputLabelsOnFillUp;
-    private int rethingDaoDataArrangement;
+    private int logFixStyling;
+    private int logAddYearSections;
+    private int fillUpFixHorizontalInputLabels;
+    private int fillUpTitleNewOrEdit;
+    private int daoAndDataRethink;
+    private int dbUnitsStored;
+
 }
