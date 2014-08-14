@@ -33,31 +33,34 @@ interface DbContract {
                 + COL_LPG_VOLUME + TYPE_NUMERIC + ","
                 + COL_ULP_PRICE + TYPE_NUMERIC + ");";
 
-
-            // change data to be in common units
+        interface V1 {
+            // rename a upl_price to ulp_price
+            String COL_UPL_PRICE = "upl_price";
+        }
+        
+        // change data to be in common units
         String[] UPDATE_V1V2 = {
                 "update " + TABLE_NAME + " set "
                 + COL_DISTANCE + "=" + COL_DISTANCE + "/1000.0,"
                 + COL_LPG_PRICE + "=" + COL_LPG_PRICE + "/1000.0,"
                 + COL_LPG_VOLUME + "=" + COL_LPG_VOLUME + "/1000.0,"
-                + COL_ULP_PRICE + "=" + COL_ULP_PRICE + "/1000.0;"
+                + V1.COL_UPL_PRICE + "=" + V1.COL_UPL_PRICE + "/1000.0;"
         };
         
-        interface V2V3 {
+        interface V2 {
             // rename a upl_price to ulp_price
             String TABLE_NAME = "fill_up_tmp";
-            String COL_UPL_PRICE = "upl_price";
             String[] COLS = {
-                    _ID, COL_DATE, COL_DISTANCE, COL_LPG_PRICE, COL_LPG_VOLUME, COL_UPL_PRICE
+                    _ID, COL_DATE, COL_DISTANCE, COL_LPG_PRICE, COL_LPG_VOLUME, V1.COL_UPL_PRICE
             };
             String COLS_LIST = TextUtils.join(",", COLS);
         }
         
         String[] UPDATE_V2V3 = {
-                "alter table " + TABLE_NAME + " rename to " + V2V3.TABLE_NAME + ";",
+                "alter table " + TABLE_NAME + " rename to " + V2.TABLE_NAME + ";",
                 TABLE_CREATE,
-                "insert into " + TABLE_NAME + " (" + COLS_LIST + ") select " + V2V3.COLS_LIST + " from " + V2V3.TABLE_NAME + ";",
-                "drop table " + V2V3.TABLE_NAME + ";"
+                "insert into " + TABLE_NAME + " (" + COLS_LIST + ") select " + V2.COLS_LIST + " from " + V2.TABLE_NAME + ";",
+                "drop table " + V2.TABLE_NAME + ";"
         };
     }
 
