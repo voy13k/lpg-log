@@ -8,13 +8,13 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12/07/2014" />
+        android:text="@string/stub_date" />
 
     <TextView
         android:id="@+id/gasConsupmtion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="13.5"
+        android:text="@string/stub_consumption"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -28,14 +28,8 @@
         android:id="@+id/saving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="14.35"
+        android:text="@string/stub_savings"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/currency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/unit_currency"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

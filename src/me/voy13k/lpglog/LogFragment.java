@@ -1,10 +1,6 @@
 package me.voy13k.lpglog;
 
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Locale;
 
 import me.voy13k.lpglog.data.Data;
 import me.voy13k.lpglog.data.FillUpEntry;
@@ -32,11 +28,6 @@ public class LogFragment extends ListFragment {
     private static final String[] COLUMN_NAMES = Arrays.copyOfRange(CURSOR_COLUMN_NAMES, 1,
         CURSOR_COLUMN_NAMES.length);
 
-	private static final Format FORMAT_DATE = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-    private static final Format FORMAT_CONSUMPTION = new DecimalFormat("0.0");
-    private static final Format FORMAT_SAVINGS = new DecimalFormat("0.00");
-
-
 	private OnFragmentInteractionListener mListener;
 
 	/**
@@ -60,9 +51,9 @@ public class LogFragment extends ListFragment {
         for (FillUpEntry entry: Data.getInstance(getActivity()).getFillUpEntries()) {
             matrixCursor.newRow()
                     .add(entry.getId())
-                    .add(FORMAT_DATE.format(entry.getDate()))
-                    .add(FORMAT_CONSUMPTION.format(100 * entry.getLpgConsumption()))
-                    .add(FORMAT_SAVINGS.format(0.001 * entry.getSaving()));
+                    .add(Format.DATE.format(entry.getDate()))
+                    .add(Format.CONSUMPTION.format(100 * entry.getLpgConsumption()))
+                    .add(Format.DOLLARS.format(entry.getSaving()));
         }
         return matrixCursor;
 	}

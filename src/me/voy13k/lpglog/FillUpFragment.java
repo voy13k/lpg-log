@@ -64,10 +64,10 @@ public class FillUpFragment extends Fragment {
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(entry.getDate());
                 buttonDate.setCalendar(cal);
-                editDistance.setText(String.valueOf(entry.getDistance() / 1000.0));
-                editLpgPrice.setText(String.valueOf(entry.getLpgPrice() / 10.0));
-                editLpgVolume.setText(String.valueOf(entry.getLpgVolume() / 1000.0));
-                editUlpPrice.setText(String.valueOf(entry.getUlpPrice() / 10.0));
+                editDistance.setText(Format.DISTANCE.format(entry.getDistance()));
+                editLpgPrice.setText(Format.CENTS.format(entry.getLpgPrice() * 100));
+                editLpgVolume.setText(Format.CONSUMPTION.format(entry.getLpgVolume()));
+                editUlpPrice.setText(Format.CENTS.format(entry.getUlpPrice() * 100));
                 break;
             }
         }
@@ -80,10 +80,10 @@ public class FillUpFragment extends Fragment {
         FillUpEntry entry = new FillUpEntry();
         entry.setId(entryId);
         entry.setDate(buttonDate.getCalendar().getTimeInMillis());
-        entry.setDistance(toInt(getDouble(editDistance) * 1000));
-        entry.setLpgPrice(toInt(getDouble(editLpgPrice) * 10));
-        entry.setLpgVolume(toInt(getDouble(editLpgVolume) * 1000));
-        entry.setUlpPrice(toInt(getDouble(editUlpPrice) * 10));
+        entry.setDistance(getFloat(editDistance));
+        entry.setLpgPrice(getFloat(editLpgPrice) / 100);
+        entry.setLpgVolume(getFloat(editLpgVolume));
+        entry.setUlpPrice(getFloat(editUlpPrice) / 100);
         Dao.getInstance(getActivity()).save(entry);
         Data.reload();
         return true;
@@ -96,18 +96,14 @@ public class FillUpFragment extends Fragment {
 
     private boolean isValid(EditText editText) {
         try {
-            return getDouble(editText) > 0.0;
+            return getFloat(editText) > 0.0;
         } catch (NumberFormatException e) {
             return false;
         }
     }
 
-    private int toInt(Double d) {
-        return d.intValue();
-    }
-
-    private double getDouble(TextView textView) {
-        return Double.parseDouble(textView.getText().toString());
+    private float getFloat(TextView textView) {
+        return Float.parseFloat(textView.getText().toString());
     }
 
 }

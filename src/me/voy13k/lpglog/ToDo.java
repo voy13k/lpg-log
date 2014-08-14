@@ -8,5 +8,5 @@ public class ToDo {
     private int fillUpTitleNewOrEdit;
     private int daoAndDataRethink;
     private int dbUnitsStored;
-
+    private int totalsCurrencyUnit;
 }

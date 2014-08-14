@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources><string name="stub_distance">345.6</string>
-<string name="stub_lpg_price">64.5</string>
-<string name="stub_ulp_price">145.9</string>
-<string name="stub_lpg_volume">43.21</string>
-    
+<resources>
+
+    <string name="stub_distance">345.6</string>
+    <string name="stub_lpg_price">64.5</string>
+    <string name="stub_ulp_price">145.9</string>
+    <string name="stub_lpg_volume">43.21</string>
+    <string name="stub_date">12/07/2014</string>
+    <string name="stub_consumption">13.5</string>
+    <string name="stub_savings">$14.35</string>
+
 </resources>

@@ -6,21 +6,21 @@ import android.text.format.DateFormat;
 
 /*
  * So that we can use integers to store data, we use smaller units:
- * distance - m
- * prices - millidollars
- * volume - ml
- * consumption - ml/m (same as l/km)
+ * distance - km
+ * prices - dollars
+ * volume - ltr
+ * consumption - ltr/km (not ltr/100km !!)
  */
 public class FillUpEntry implements DbContract.FillUp {
 
     private long id;
     private long date;
-    private int distance;
-    private int lpgPrice;
-    private int ulpPrice;
-    private int lpgVolume;
-    private int saving;
-    private double lpgConsumption;
+    private float distance;
+    private float lpgPrice;
+    private float ulpPrice;
+    private float lpgVolume;
+    private float saving;
+    private float lpgConsumption;
 
     public long getId() {
         return id;
@@ -38,55 +38,54 @@ public class FillUpEntry implements DbContract.FillUp {
         this.date = date;
     }
 
-    public int getDistance() {
+    public float getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(float distance) {
         this.distance = distance;
     }
 
-    public int getLpgPrice() {
+    public float getLpgPrice() {
         return lpgPrice;
     }
 
-    public void setLpgPrice(int lpgPrice) {
+    public void setLpgPrice(float lpgPrice) {
         this.lpgPrice = lpgPrice;
     }
 
-    public int getUlpPrice() {
+    public float getUlpPrice() {
         return ulpPrice;
     }
 
-    public void setUlpPrice(int ulpPrice) {
+    public void setUlpPrice(float ulpPrice) {
         this.ulpPrice = ulpPrice;
     }
 
-    public int getLpgVolume() {
+    public float getLpgVolume() {
         return lpgVolume;
     }
 
-    public void setLpgVolume(int lpgVolume) {
+    public void setLpgVolume(float lpgVolume) {
         this.lpgVolume = lpgVolume;
     }
 
-    public void setSaving(int saving) {
-        this.saving = saving;
-    }
-
-    public int getSaving() {
+    public float getSaving() {
         return saving;
     }
 
-    public double getLpgConsumption() {
+    public void setSaving(float saving) {
+        this.saving = saving;
+    }
+    
+    public float getLpgConsumption() {
         return lpgConsumption;
     }
 
-    public void setLpgConsumption(double lpgConsumption) {
+    public void setLpgConsumption(float lpgConsumption) {
         this.lpgConsumption = lpgConsumption;
     }
 
-    @Override
     public String toString() {
         return MessageFormat.format("{0} {1} {2} {3} {4} {5}", id,
                 DateFormat.format("yyyy:MM:dd", date), distance, lpgPrice, ulpPrice, lpgVolume);

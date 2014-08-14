@@ -8,7 +8,7 @@ interface DbContract {
     String SEP_COMMA = ",";
 
     String DB_NAME = "LPGLog.db";
-    int DB_VERSION = 1;
+    int DB_VERSION = 2;
 
     interface FillUp extends BaseColumns {
         String TABLE_NAME = "fill_up";
@@ -32,6 +32,12 @@ interface DbContract {
                 + COL_LPG_VOLUME + TYPE_NUMERIC + SEP_COMMA
                 + COL_ULP_PRICE + TYPE_NUMERIC + ");";
 
+        String UPDATE_1_2 =
+                "update " + TABLE_NAME + " set "
+                        + COL_DISTANCE + "=" + COL_DISTANCE + "/1000.0,"
+                        + COL_LPG_PRICE + "=" + COL_LPG_PRICE + "/1000.0,"
+                        + COL_LPG_VOLUME + "=" + COL_LPG_VOLUME + "/1000.0,"
+                        + COL_ULP_PRICE + "=" + COL_ULP_PRICE + "/1000.0;";
     }
 
 }

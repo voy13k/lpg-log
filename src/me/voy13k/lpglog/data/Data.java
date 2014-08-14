@@ -4,13 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
-import android.util.LogPrinter;
 
 public class Data {
-
-    private static final LogPrinter INFO = new LogPrinter(Log.INFO,
-            Data.class.getCanonicalName());
 
     private static Data theInstance;
 
@@ -23,15 +18,13 @@ public class Data {
 
     public static synchronized void reload() {
         theInstance = null;
-        INFO.println("reloaded");
     }
 
     private List<FillUpEntry> fillUpEntries;
 
-    private double totalDistance; // m
-    private double totalLpgVolume; // ml
-
-    private int totalSavings;
+    private float totalDistance;
+    private float totalLpgVolume;
+    private float totalSavings;
 
     private boolean loaded;
 
@@ -48,14 +41,14 @@ public class Data {
         return fillUpEntries;
     }
 
-    public double getAverageLpgConsumption() {
+    public float getAverageLpgConsumption() {
         verify(loaded);
-        return 100.0 * totalLpgVolume / totalDistance;
+        return totalLpgVolume / totalDistance;
     }
     
-    public double getTotalSavings() {
+    public float getTotalSavings() {
         verify(calculated);
-        return totalSavings / 1000.0;
+        return totalSavings;
     }
     
     private void verify(boolean flag) {
@@ -65,25 +58,21 @@ public class Data {
     }
 
     private void calculate() {
-        double averageLpgConsumption = getAverageLpgConsumption();
-        double averageUlpConsumption = 10.5d;
-        double ulpToLpgRatio = averageUlpConsumption / averageLpgConsumption;
+        float averageLpgConsumption = getAverageLpgConsumption();
+        float averageUlpConsumption = 10.5f / 100f;
+        float ulpToLpgRatio = averageUlpConsumption / averageLpgConsumption;
 
         for (FillUpEntry entry : fillUpEntries) {
-            double lpgVolume = entry.getLpgVolume();
-            double lpgCost = 0.001 * lpgVolume * entry.getLpgPrice();
-            double ulpCost = 0.001 * lpgVolume * ulpToLpgRatio * entry.getUlpPrice();
-            int saving = toInt(ulpCost - lpgCost);
+            float lpgVolume = entry.getLpgVolume();
+            float lpgCost = lpgVolume * entry.getLpgPrice();
+            float ulpCost = lpgVolume * ulpToLpgRatio * entry.getUlpPrice();
+            float saving = ulpCost - lpgCost;
             totalSavings += saving;
             entry.setSaving(saving);
-            double lpgConsumption = lpgVolume / entry.getDistance();
+            float lpgConsumption = lpgVolume / entry.getDistance();
             entry.setLpgConsumption(lpgConsumption);
         }
         calculated = true;
-    }
-
-    private int toInt(Double d) {
-        return d.intValue();
     }
 
     private void load(Context context) {

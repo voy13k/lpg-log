@@ -70,10 +70,10 @@ public class Dao {
         FillUpEntry entry = new FillUpEntry();
         entry.setId(cursor.getLong(0));
         entry.setDate(cursor.getLong(1));
-        entry.setDistance(cursor.getInt(2));
-        entry.setLpgPrice(cursor.getInt(3));
-        entry.setLpgVolume(cursor.getInt(4));
-        entry.setUlpPrice(cursor.getInt(5));
+        entry.setDistance(cursor.getFloat(2));
+        entry.setLpgPrice(cursor.getFloat(3));
+        entry.setLpgVolume(cursor.getFloat(4));
+        entry.setUlpPrice(cursor.getFloat(5));
         return entry;
     }
 
@@ -88,10 +88,29 @@ public class Dao {
 
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-                // Version 1 - no updates required
+                for (int version = oldVersion; version < newVersion; version++) {
+                    upgrades[version].run(db);
+                }
             }
         };
         sqLiteDb = openHelper.getWritableDatabase();
     }
 
+    private interface Upgrade {
+        void run(SQLiteDatabase db); 
+    }
+
+    private Upgrade[] upgrades = {
+            new Upgrade() {
+                @Override
+                public void run(SQLiteDatabase db) {
+                }
+            },
+            new Upgrade() {
+                @Override
+                public void run(SQLiteDatabase db) {
+                    db.execSQL(DbContract.FillUp.UPDATE_1_2);
+                }
+            },
+    };
 }
