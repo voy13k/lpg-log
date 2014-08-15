@@ -25,5 +25,6 @@
     <string name="message_save_success">Record saved.</string>
     <string name="label_total_savings">Total Savings</string>
     <string name="label_avg_lpg_consumption">Avg LPG Usage</string>
+    <string name="message_log_empty">Use the Plus button to record you first LPG fill up.</string>
 
 </resources>

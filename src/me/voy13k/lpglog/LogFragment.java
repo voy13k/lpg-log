@@ -38,12 +38,12 @@ public class LogFragment extends ListFragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		setListAdapter(new SimpleCursorAdapter(getActivity(),
-				R.layout.list_item_log, getLogDataCursor(), COLUMN_NAMES,
-				LOG_ITEM_VIEW_IDS, 0));
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+	    super.onViewCreated(view, savedInstanceState);
+	    setListAdapter(new SimpleCursorAdapter(getActivity(),
+	            R.layout.list_item_log, getLogDataCursor(), COLUMN_NAMES,
+	            LOG_ITEM_VIEW_IDS, 0));
+	    setEmptyText(getString(R.string.message_log_empty));
 	}
 
 	private Cursor getLogDataCursor() {
