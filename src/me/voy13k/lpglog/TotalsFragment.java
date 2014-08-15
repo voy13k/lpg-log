@@ -35,7 +35,7 @@ public class TotalsFragment extends Fragment {
     }
 
     private void setAverageLpgConsumption(Data data) {
-        float avgLpgConsumption = data.getAverageLpgConsumption() * 100;
+        float avgLpgConsumption = data.getAverageLpgConsumption();
         String totalAvgLpgConsumptionTxt = Format.CONSUMPTION.format(avgLpgConsumption);
         ((TextView)getActivity().findViewById(R.id.textAvgLpgConsumption)).setText(totalAvgLpgConsumptionTxt);
     }

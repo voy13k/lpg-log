@@ -43,7 +43,7 @@ public class Data {
 
     public float getAverageLpgConsumption() {
         verify(loaded);
-        return totalLpgVolume / totalDistance;
+        return 100 * totalLpgVolume / totalDistance;
     }
     
     public float getTotalSavings() {
@@ -59,18 +59,17 @@ public class Data {
 
     private void calculate() {
         float averageLpgConsumption = getAverageLpgConsumption();
-        float averageUlpConsumption = 10.5f / 100f;
-        float ulpToLpgRatio = averageUlpConsumption / averageLpgConsumption;
+        float averageUlpConsumption = 10.5f;
+        float avgUlpToLpgRatio = averageUlpConsumption / averageLpgConsumption;
 
         for (FillUpEntry entry : fillUpEntries) {
             float lpgVolume = entry.getLpgVolume();
+            entry.setLpgConsumption(100 * lpgVolume / entry.getDistance());
             float lpgCost = lpgVolume * entry.getLpgPrice();
-            float ulpCost = lpgVolume * ulpToLpgRatio * entry.getUlpPrice();
+            float ulpCost = lpgVolume * avgUlpToLpgRatio * entry.getUlpPrice();
             float saving = ulpCost - lpgCost;
-            totalSavings += saving;
             entry.setSaving(saving);
-            float lpgConsumption = lpgVolume / entry.getDistance();
-            entry.setLpgConsumption(lpgConsumption);
+            totalSavings += saving;
         }
         calculated = true;
     }
