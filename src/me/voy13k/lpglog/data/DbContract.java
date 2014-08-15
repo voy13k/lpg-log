@@ -7,7 +7,7 @@ interface DbContract {
 
     String TYPE_NUMERIC = " NUMERIC";
     String DB_NAME = "LPGLog.db";
-    int DB_VERSION = 4;
+    int DB_VERSION = 1;
 
     interface FillUp extends BaseColumns {
         String TABLE_NAME = "fill_up";
@@ -33,44 +33,27 @@ interface DbContract {
                 + COL_LPG_VOLUME + TYPE_NUMERIC + ","
                 + COL_ULP_PRICE + TYPE_NUMERIC + ");";
 
-        interface V1 {
-            String COL_UPL_PRICE = "upl_price";
-        }
+        // In upgrade / downgrade scripts don't use constants,
+        // cause their current versions might not match the old ones.
+        // Use hardcoded text that matches appropriate old versions.
         
-        interface V2 {
-            String TABLE_NAME = "fill_up_tmp";
-            String[] COLS = {
-                    _ID, COL_DATE, COL_DISTANCE, COL_LPG_PRICE, COL_LPG_VOLUME, V1.COL_UPL_PRICE
-            };
-            String COLS_LIST = TextUtils.join(",", COLS);
-        }
-        
-        String[] V1V2 = { // change data to be in common units
-                "update " + TABLE_NAME + " set "
-                + COL_DISTANCE + "=" + COL_DISTANCE + "/1000.0,"
-                + COL_LPG_PRICE + "=" + COL_LPG_PRICE + "/1000.0,"
-                + COL_LPG_VOLUME + "=" + COL_LPG_VOLUME + "/1000.0,"
-                + V1.COL_UPL_PRICE + "=" + V1.COL_UPL_PRICE + "/1000.0;",
-        };
-        String[] V2V3 = { // rename a upl_price to ulp_price
-                "alter table " + TABLE_NAME + " rename to " + V2.TABLE_NAME + ";"
-                ,TABLE_CREATE
-                ,"insert into " + TABLE_NAME + " (" + COLS_LIST + ") select " + V2.COLS_LIST + " from " + V2.TABLE_NAME + ";"
-                ,"drop table " + V2.TABLE_NAME + ";"
-        };
-        String[] V3V4 = { // change data back to be ints (meters, millilitres, millidollars)
-                "update " + TABLE_NAME + " set "
-                + COL_DISTANCE + "=round(" + COL_DISTANCE + "*1000),"
-                + COL_LPG_PRICE + "=round(" + COL_LPG_PRICE + "*1000),"
-                + COL_LPG_VOLUME + "=round(" + COL_LPG_VOLUME + "*1000),"
-                + COL_ULP_PRICE + "=round(" + COL_ULP_PRICE + "*1000.0);",
+        String[] V4V3 = { // change data to be decimals, rounded to 3 digits (km, litres, dollars)
+                "update fill_up set "
+                + "distance=round(distance/1000.0, 3),"
+                + "lpg_price=round(lpg_price/1000.0, 3),"
+                + "lpg_volume=round(lpg_volume/1000.0, 3),"
+                + "ulp_price=round(ulp_price/1000.0, 3);",
         };
     }
     String[][] UPGRADE_SQL = {
             {},
-            FillUp.V1V2,
-            FillUp.V2V3,
-            FillUp.V3V4,
+    };
+    String[][] DOWNGRADE_SQL = {
+            {},
+            {},
+            {},
+            {},
+            FillUp.V4V3,
     };
 
 }

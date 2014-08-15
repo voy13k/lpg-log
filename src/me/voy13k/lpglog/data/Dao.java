@@ -1,5 +1,8 @@
 package me.voy13k.lpglog.data;
 
+import java.text.DecimalFormat;
+import java.text.Format;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Dao {
 
     private static Dao instance;
+    private static Format DB_FLOAT = new DecimalFormat("0.###");
 
     public static synchronized Dao getInstance(Context context) {
         if (instance == null) {
@@ -42,16 +46,12 @@ public class Dao {
             values.put(FillUpEntry._ID, entryId);
         }
         values.put(FillUpEntry.COL_DATE, fillUpEntry.getDate());
-        values.put(FillUpEntry.COL_DISTANCE, toInt(fillUpEntry.getDistance()*1000));
-        values.put(FillUpEntry.COL_LPG_PRICE, toInt(fillUpEntry.getLpgPrice()*1000));
-        values.put(FillUpEntry.COL_LPG_VOLUME, toInt(fillUpEntry.getLpgVolume()*1000));
-        values.put(FillUpEntry.COL_ULP_PRICE, toInt(fillUpEntry.getUlpPrice()*1000));
+        values.put(FillUpEntry.COL_DISTANCE, DB_FLOAT.format(fillUpEntry.getDistance()));
+        values.put(FillUpEntry.COL_LPG_PRICE, DB_FLOAT.format(fillUpEntry.getLpgPrice()));
+        values.put(FillUpEntry.COL_LPG_VOLUME, DB_FLOAT.format(fillUpEntry.getLpgVolume()));
+        values.put(FillUpEntry.COL_ULP_PRICE, DB_FLOAT.format(fillUpEntry.getUlpPrice()));
         sqLiteDb.insertWithOnConflict(FillUpEntry.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);
-    }
-
-    private int toInt(Float f) {
-        return f.intValue();
     }
 
     public interface OnLoadedListener<E> {
@@ -74,10 +74,10 @@ public class Dao {
         FillUpEntry entry = new FillUpEntry();
         entry.setId(cursor.getLong(0));
         entry.setDate(cursor.getLong(1));
-        entry.setDistance(cursor.getInt(2)/1000f);
-        entry.setLpgPrice(cursor.getInt(3)/1000f);
-        entry.setLpgVolume(cursor.getInt(4)/1000f);
-        entry.setUlpPrice(cursor.getInt(5)/1000f);
+        entry.setDistance(cursor.getFloat(2));
+        entry.setLpgPrice(cursor.getFloat(3));
+        entry.setLpgVolume(cursor.getFloat(4));
+        entry.setUlpPrice(cursor.getFloat(5));
         return entry;
     }
 
@@ -95,6 +95,15 @@ public class Dao {
                 for (int version = oldVersion; version < newVersion; version++) {
                     for (String versionUpgradeSql : DbContract.UPGRADE_SQL[version]) {
                         db.execSQL(versionUpgradeSql);
+                    }
+                }
+            }
+
+            @Override
+            public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                for (int version = oldVersion; version > newVersion; version--) {
+                    for (String versionDowngradeSql : DbContract.DOWNGRADE_SQL[version]) {
+                        db.execSQL(versionDowngradeSql);
                     }
                 }
             }
