@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -19,12 +20,19 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class DataStore {
 
+    private static final String PREFERENCES = "LPGLog.prefs";
+
+    private static final String PREF_LPG_CONVERSION_COST = "LpgConversionCost";
+    private static final String PREF_AVG_ULP_CONSUMPTION = "AverageUlpConsumption";
+
     private static Format DB_FLOAT = new DecimalFormat("0.###");
 
+    private Context context;
     private DbOpenHelper dbOpenHelper;
     private Data data;
 
     public DataStore(Context context) {
+        this.context = context;
         this.dbOpenHelper = new DbOpenHelper(context);
     }
 
@@ -68,6 +76,22 @@ public class DataStore {
         }
     }
 
+    public float getLpgConversionCost() {
+        return getPreferences().getFloat(PREF_LPG_CONVERSION_COST, 0);
+    }
+
+    public void setLpgConversionCost(float v) {
+        getPreferences().edit().putFloat(PREF_LPG_CONVERSION_COST, v).commit();
+    }
+
+    public float getAverageUlpConsumption() {
+        return getPreferences().getFloat(PREF_AVG_ULP_CONSUMPTION, 0);
+    }
+
+    public void setAverageUlpConsumption(float v) {
+        getPreferences().edit().putFloat(PREF_AVG_ULP_CONSUMPTION, v).commit();
+    }
+
     private synchronized Data getData() {
         if (data == null) {
             retrieveData();
@@ -75,6 +99,10 @@ public class DataStore {
         return data;
     }
 
+    private SharedPreferences getPreferences() {
+        return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+    }
+    
     private void retrieveData() {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         Cursor cursor = db.query(FillUpEntry.TABLE_NAME, FillUpEntry.COLS, null, null, null,

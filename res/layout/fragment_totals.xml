@@ -20,11 +20,35 @@
 
     <TextView
         style="@style/Totals.Label"
-        android:text="@string/label_avg_lpg_consumption" />
+        android:text="@string/label_lpg_conversion_cost" />
+
+    <LinearLayout
+        android:id="@+id/action_change_lpg_conversion_cost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textLpgConversionCost"
+            style="@style/Totals.Value"
+            android:text="$2345.56" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_change"
+            android:textStyle="italic"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/textAvgLpgConsumption"
+        style="@style/Totals.Label"
+        android:text="@string/label_net_balance" />
+
+    <TextView
+        android:id="@+id/textLpgBalance"
         style="@style/Totals.Value"
-        android:text="13.3 ltr/100km" />
+        android:text="$-1111.11" />
 
 </LinearLayout>
