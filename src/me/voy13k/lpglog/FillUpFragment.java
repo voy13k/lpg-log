@@ -67,6 +67,10 @@ public class FillUpFragment extends Fragment {
     }
 
     private void fillFromDb() {
+        editDistance.setText(null);
+        editLpgPrice.setText(null);
+        editLpgVolume.setText(null);
+        editUlpPrice.setText(null);
         if (entryId == 0) {
             return;
         }
