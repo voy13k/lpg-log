@@ -1,15 +1,12 @@
 package me.voy13k.lpglog.data;
 
-import java.text.MessageFormat;
-
-import android.text.format.DateFormat;
 
 /*
  * So that we can use integers to store data, we use smaller units:
  * distance - km
  * prices - dollars
  * volume - ltr
- * consumption - ltr/km (not ltr/100km !!)
+ * consumption - ltr/100km
  */
 public class FillUpEntry implements DbContract.FillUp {
 
@@ -20,7 +17,6 @@ public class FillUpEntry implements DbContract.FillUp {
     private float ulpPrice;
     private float lpgVolume;
     private float saving;
-    private float lpgConsumption;
 
     public long getId() {
         return id;
@@ -77,18 +73,9 @@ public class FillUpEntry implements DbContract.FillUp {
     public void setSaving(float saving) {
         this.saving = saving;
     }
-    
+
     public float getLpgConsumption() {
-        return lpgConsumption;
-    }
-
-    public void setLpgConsumption(float lpgConsumption) {
-        this.lpgConsumption = lpgConsumption;
-    }
-
-    public String toString() {
-        return MessageFormat.format("{0} {1} {2} {3} {4} {5}", id,
-                DateFormat.format("yyyy:MM:dd", date), distance, lpgPrice, ulpPrice, lpgVolume);
+        return 100 * lpgVolume / distance;
     }
 
 }

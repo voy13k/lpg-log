@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import me.voy13k.lpglog.data.Data;
+import me.voy13k.lpglog.data.DataStore;
 import me.voy13k.lpglog.data.FillUpEntry;
 import me.voy13k.lpglog.util.TextViewHelper;
 
@@ -18,7 +18,8 @@ public class LogAdapter extends ArrayAdapter<FillUpEntry> {
     public LogAdapter(Activity activity) {
         super(activity, 0);
         this.layoutInflator = activity.getLayoutInflater();
-        addAll(Data.getInstance(activity).getFillUpEntries());
+        DataStore dataStore = ((Application)activity.getApplication()).getDataStore();
+        addAll(dataStore.getFillUpEntries());
     }
 
     public void addAll(Collection<? extends FillUpEntry> entries) {

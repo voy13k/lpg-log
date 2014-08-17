@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public interface Format {
 
-    java.text.Format CENTS = new DecimalFormat("0.0");
+    java.text.Format CENTS = new DecimalFormat("0.0#");
     java.text.Format CONSUMPTION = new DecimalFormat("0.0#");
     java.text.Format DATE = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
     java.text.Format DISTANCE = new DecimalFormat("0.0#");

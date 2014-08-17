@@ -1,7 +1,7 @@
 package me.voy13k.lpglog;
 
 
-import me.voy13k.lpglog.data.Data;
+import me.voy13k.lpglog.data.DataStore;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,19 +23,17 @@ public class TotalsFragment extends Fragment {
 	@Override
 	public void onResume() {
 	    super.onResume();
-	    Data data = Data.getInstance(getActivity());
-        setTotalSavings(data);
-        setAverageLpgConsumption(data);
+	    DataStore dataStore = ((Application)getActivity().getApplication()).getDataStore();
+        setTotalSavings(dataStore.getTotalSavings());
+        setAverageLpgConsumption(dataStore.getAverageLpgConsumption());
 	}
 
-    private void setTotalSavings(Data data) {
-        float totalSavings = data.getTotalSavings();
+    private void setTotalSavings(float totalSavings) {
         String totalSavingsTxt = Format.DOLLARS.format(totalSavings);
         ((TextView)getActivity().findViewById(R.id.textTotalSavings)).setText(totalSavingsTxt);
     }
 
-    private void setAverageLpgConsumption(Data data) {
-        float avgLpgConsumption = data.getAverageLpgConsumption();
+    private void setAverageLpgConsumption(float avgLpgConsumption) {
         String totalAvgLpgConsumptionTxt = Format.CONSUMPTION.format(avgLpgConsumption);
         ((TextView)getActivity().findViewById(R.id.textAvgLpgConsumption)).setText(totalAvgLpgConsumptionTxt);
     }

@@ -2,11 +2,12 @@ package me.voy13k.lpglog;
 
 import java.util.Calendar;
 
-import me.voy13k.lpglog.data.Dao;
-import me.voy13k.lpglog.data.Data;
+import me.voy13k.lpglog.data.DataStore;
 import me.voy13k.lpglog.data.FillUpEntry;
 import me.voy13k.lpglog.widget.DatePickerButton;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ public class FillUpFragment extends Fragment {
 
     public static final String ARG_ENTRY_ID = "entryId";
 
+    private DataStore dataStore;
     private DatePickerButton buttonDate;
     private EditText editDistance;
     private EditText editLpgPrice;
@@ -25,12 +27,10 @@ public class FillUpFragment extends Fragment {
     private EditText editLpgVolume;
     private long entryId;
 
-    public static FillUpFragment newInstance(Long entryId) {
-        Bundle args = new Bundle();
-        if (entryId != null) {
-            args.putLong(ARG_ENTRY_ID, entryId);
-        }
+    public static FillUpFragment newInstance(long entryId) {
         FillUpFragment fillUpFragment = new FillUpFragment();
+        Bundle args = new Bundle();
+        args.putLong(ARG_ENTRY_ID, entryId);
         fillUpFragment.setArguments(args);
         return fillUpFragment;
     }
@@ -44,33 +44,40 @@ public class FillUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_fill_up, container, false);
-        buttonDate = (DatePickerButton) rootView.findViewById(R.id.buttonDate);
-        editDistance = (EditText) rootView.findViewById(R.id.editDistance);
-        editLpgPrice = (EditText) rootView.findViewById(R.id.editLpgPrice);
-        editUlpPrice = (EditText) rootView.findViewById(R.id.editUlpPrice);
-        editLpgVolume = (EditText) rootView.findViewById(R.id.editLpgVolume);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        buttonDate = (DatePickerButton) view.findViewById(R.id.buttonDate);
+        editDistance = (EditText) view.findViewById(R.id.editDistance);
+        editLpgPrice = (EditText) view.findViewById(R.id.editLpgPrice);
+        editUlpPrice = (EditText) view.findViewById(R.id.editUlpPrice);
+        editLpgVolume = (EditText) view.findViewById(R.id.editLpgVolume);
         entryId = getArguments().getLong(ARG_ENTRY_ID, 0);
         fillFromDb();
         editDistance.requestFocus();
-        return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        dataStore = ((Application) activity.getApplication()).getDataStore();
     }
 
     private void fillFromDb() {
         if (entryId == 0) {
             return;
         }
-        for (FillUpEntry entry: Data.getInstance(getActivity()).getFillUpEntries()) {
-            if (entry.getId() == entryId) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeInMillis(entry.getDate());
-                buttonDate.setCalendar(cal);
-                editDistance.setText(Format.DISTANCE.format(entry.getDistance()));
-                editLpgPrice.setText(Format.CENTS.format(entry.getLpgPrice() * 100));
-                editLpgVolume.setText(Format.VOLUME.format(entry.getLpgVolume()));
-                editUlpPrice.setText(Format.CENTS.format(entry.getUlpPrice() * 100));
-                break;
-            }
-        }
+        FillUpEntry entry = dataStore.getFillUpEntryById(entryId);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(entry.getDate());
+        buttonDate.setCalendar(cal);
+        editDistance.setText(Format.DISTANCE.format(entry.getDistance()));
+        editLpgPrice.setText(Format.CENTS.format(entry.getLpgPrice() * 100));
+        editLpgVolume.setText(Format.VOLUME.format(entry.getLpgVolume()));
+        editUlpPrice.setText(Format.CENTS.format(entry.getUlpPrice() * 100));
     }
 
     public boolean save() {
@@ -84,8 +91,7 @@ public class FillUpFragment extends Fragment {
         entry.setLpgPrice(getFloat(editLpgPrice) / 100);
         entry.setLpgVolume(getFloat(editLpgVolume));
         entry.setUlpPrice(getFloat(editUlpPrice) / 100);
-        Dao.getInstance(getActivity()).save(entry);
-        Data.reload();
+        dataStore.save(entry);
         return true;
     }
 
