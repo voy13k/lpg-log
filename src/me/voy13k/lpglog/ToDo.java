@@ -6,9 +6,9 @@ public class ToDo {
     private int logAddYearSections;
     private int fillUpFixHorizontalInputLabels;
     private int fillUpTitleNewOrEdit;
+    private int fillUpKeyboardLastActionSave;
     private int statsEnterUlpUsgae;
-    private int totalsRefreshAfterLPGConversionCostChange;
     private int logNiceEmptyPage;
-    private int dialogLpgConvCostAutokeyboard;
-
+    private int dialogLpgConvCostEmptyNotZero;
+    private int dialogLpgConvesionCostKeboardActionButtonSave;
 }

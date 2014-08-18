@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.util.SimpleArrayMap;
+import android.util.Log;
 
 /**
  * Long living wrapper object around data from DB. Clients can hold on to this
@@ -19,6 +21,10 @@ import android.database.sqlite.SQLiteDatabase;
  * then retrieve new data when needed again.
  */
 public class DataStore {
+
+    public interface OnDataChangedListener {
+        void onDataChanged();
+    }
 
     private static final String PREFERENCES = "LPGLog.prefs";
 
@@ -30,12 +36,24 @@ public class DataStore {
     private Context context;
     private DbOpenHelper dbOpenHelper;
     private Data data;
+    private SimpleArrayMap<OnDataChangedListener, OnDataChangedListener> listeners;
 
     public DataStore(Context context) {
         this.context = context;
         this.dbOpenHelper = new DbOpenHelper(context);
+        this.listeners = new SimpleArrayMap<OnDataChangedListener, OnDataChangedListener>();
     }
 
+    public void register(OnDataChangedListener listener) {
+        this.listeners.put(listener, listener);
+        Log.i("DataStore", "listeners: " + listeners.size());
+    }
+    
+    public void deregister(OnDataChangedListener listener) {
+        this.listeners.remove(listener);
+        Log.i("DataStore", "listeners: " + listeners.size());
+    }
+    
     public List<FillUpEntry> getFillUpEntries() {
         return getData().fillUpEntries;
     }
@@ -74,6 +92,7 @@ public class DataStore {
         synchronized (this) {
             data = null;
         }
+        notifyOnDataChange();
     }
 
     public float getLpgConversionCost() {
@@ -82,6 +101,7 @@ public class DataStore {
 
     public void setLpgConversionCost(float v) {
         getPreferences().edit().putFloat(PREF_LPG_CONVERSION_COST, v).commit();
+        notifyOnDataChange();
     }
 
     public float getAverageUlpConsumption() {
@@ -90,6 +110,7 @@ public class DataStore {
 
     public void setAverageUlpConsumption(float v) {
         getPreferences().edit().putFloat(PREF_AVG_ULP_CONSUMPTION, v).commit();
+        notifyOnDataChange();
     }
 
     private synchronized Data getData() {
@@ -102,7 +123,7 @@ public class DataStore {
     private SharedPreferences getPreferences() {
         return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
     }
-    
+
     private void retrieveData() {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         Cursor cursor = db.query(FillUpEntry.TABLE_NAME, FillUpEntry.COLS, null, null, null,
@@ -163,5 +184,11 @@ public class DataStore {
             fillUpEntries = new ArrayList<FillUpEntry>(count);
         }
 
+    }
+    
+    private void notifyOnDataChange() {
+        for (int i = 0; i < listeners.size(); i++) {
+            listeners.keyAt(i).onDataChanged();
+        }
     }
 }
