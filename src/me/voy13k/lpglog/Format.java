@@ -13,5 +13,6 @@ public interface Format {
     java.text.Format DISTANCE = new DecimalFormat("0.0#");
     java.text.Format DOLLARS = NumberFormat.getCurrencyInstance();
     java.text.Format VOLUME = new DecimalFormat("0.0#");
+    java.text.Format IN_DOLLARS = new DecimalFormat("0.##");
 
 }
