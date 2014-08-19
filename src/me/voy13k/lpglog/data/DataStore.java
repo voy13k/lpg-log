@@ -110,6 +110,7 @@ public class DataStore {
 
     public void setAverageUlpConsumption(float v) {
         getPreferences().edit().putFloat(PREF_AVG_ULP_CONSUMPTION, v).commit();
+        deriveStatsAndTotals();
         notifyOnDataChange();
     }
 
@@ -159,8 +160,9 @@ public class DataStore {
 
     private void deriveStatsAndTotals() {
         float averageLpgConsumption = getAverageLpgConsumption();
-        float averageUlpConsumption = 10.5f;
+        float averageUlpConsumption = getAverageUlpConsumption();
         float avgUlpToLpgRatio = averageUlpConsumption / averageLpgConsumption;
+        data.totalSavings = 0f;
 
         for (FillUpEntry entry : data.fillUpEntries) {
             float lpgVolume = entry.getLpgVolume();

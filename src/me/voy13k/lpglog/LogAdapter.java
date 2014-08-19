@@ -8,18 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import me.voy13k.lpglog.data.DataStore;
+import me.voy13k.lpglog.data.DataStore.OnDataChangedListener;
 import me.voy13k.lpglog.data.FillUpEntry;
 import me.voy13k.lpglog.util.TextViewHelper;
 
-public class LogAdapter extends ArrayAdapter<FillUpEntry> {
+public class LogAdapter extends ArrayAdapter<FillUpEntry> implements OnDataChangedListener {
 
     private LayoutInflater layoutInflator;
+    private DataStore dataStore;
 
     public LogAdapter(Activity activity) {
         super(activity, 0);
         this.layoutInflator = activity.getLayoutInflater();
-        DataStore dataStore = ((Application)activity.getApplication()).getDataStore();
-        addAll(dataStore.getFillUpEntries());
+        dataStore = ((Application) activity.getApplication()).getDataStore();
+        onDataChanged();
+        dataStore.register(this);
     }
 
     public void addAll(Collection<? extends FillUpEntry> entries) {
@@ -48,5 +51,15 @@ public class LogAdapter extends ArrayAdapter<FillUpEntry> {
         helper.setText(R.id.date, Format.DATE, entry.getDate());
         helper.setText(R.id.gasConsupmtion, Format.CONSUMPTION, entry.getLpgConsumption());
         helper.setText(R.id.saving, Format.DOLLARS, entry.getSaving());
+    }
+
+    @Override
+    public void onDataChanged() {
+        addAll(dataStore.getFillUpEntries());
+        notifyDataSetChanged();
+    }
+
+    public void onDestroyView() {
+        dataStore.deregister(this);
     }
 }

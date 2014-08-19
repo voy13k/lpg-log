@@ -16,6 +16,7 @@ import android.widget.ListView;
 public class LogFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
+    private LogAdapter logAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -27,7 +28,8 @@ public class LogFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setListAdapter(new LogAdapter(getActivity()));
+        logAdapter = new LogAdapter(getActivity());
+        setListAdapter(logAdapter);
         setEmptyText(getString(R.string.message_log_empty));
     }
 
@@ -46,6 +48,12 @@ public class LogFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        logAdapter.onDestroyView();
     }
 
     @Override
