@@ -10,7 +10,7 @@
     tools:context=".MainActivity" >
 
     <TextView
-        style="@style/Totals.Label"
+        style="@style/StatsAndTotals.Label"
         android:text="@string/label_avg_lpg_consumption" />
 
     <LinearLayout
@@ -20,20 +20,16 @@
 
         <TextView
             android:id="@+id/textAvgLpgConsumption"
-            style="@style/Totals.Value"
+            style="@style/StatsAndTotals.Value"
             android:text="13.3" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="l/100k"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            style="@style/StatsAndTotals.UnitSuffix"
+            android:text="@string/hint_consumption" />
     </LinearLayout>
 
     <TextView
-        style="@style/Totals.Label"
+        style="@style/StatsAndTotals.Label"
         android:text="@string/label_avg_ulp_consumption" />
 
     <LinearLayout
@@ -44,24 +40,14 @@
 
         <TextView
             android:id="@+id/textAvgUlpConsumption"
-            style="@style/Totals.Value"
+            style="@style/StatsAndTotals.Value"
             android:text="10.5" />
 
         <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="l/100k"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            style="@style/StatsAndTotals.UnitSuffix"
+            android:text="@string/hint_consumption" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:gravity="right"
-            android:text="@string/action_change"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="italic" />
+        <TextView style="@style/StatsAndTotals.ChangeAction"/>
     </LinearLayout>
 
 </LinearLayout>

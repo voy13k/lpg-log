@@ -10,16 +10,16 @@
     tools:context=".MainActivity" >
 
     <TextView
-        style="@style/Totals.Label"
+        style="@style/StatsAndTotals.Label"
         android:text="@string/label_total_savings" />
 
     <TextView
         android:id="@+id/textTotalSavings"
-        style="@style/Totals.Value"
+        style="@style/StatsAndTotals.Value"
         android:text="$1234.56" />
 
     <TextView
-        style="@style/Totals.Label"
+        style="@style/StatsAndTotals.Label"
         android:text="@string/label_lpg_conversion_cost" />
 
     <LinearLayout
@@ -30,27 +30,20 @@
 
         <TextView
             android:id="@+id/textLpgConversionCost"
-            style="@style/Totals.Value"
+            style="@style/StatsAndTotals.Value"
             android:text="$2345.56" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:gravity="right"
-            android:text="@string/action_change"
-            android:textStyle="italic"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView style="@style/StatsAndTotals.ChangeAction"/>
 
     </LinearLayout>
 
     <TextView
-        style="@style/Totals.Label"
+        style="@style/StatsAndTotals.Label"
         android:text="@string/label_net_balance" />
 
     <TextView
         android:id="@+id/textLpgBalance"
-        style="@style/Totals.Value"
+        style="@style/StatsAndTotals.Value"
         android:text="$-1111.11" />
 
 </LinearLayout>
