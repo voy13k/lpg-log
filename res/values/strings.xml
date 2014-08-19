@@ -29,5 +29,6 @@
     <string name="message_log_empty">Use the Plus button to record you first LPG fill up.</string>
     <string name="label_lpg_conversion_cost">LPG Conversion Cost</string>
     <string name="label_net_balance">Net LPG Conversion Balance</string>
+    <string name="label_avg_ulp_consumption">Avg Unleaded Usage (before conversion)</string>
 
 </resources>

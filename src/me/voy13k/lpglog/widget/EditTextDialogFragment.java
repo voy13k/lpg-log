@@ -79,6 +79,7 @@ public abstract class EditTextDialogFragment extends DialogFragment {
         builder.setView(contentView);
         builder.setTitle(dialogTitle);
         builder.setPositiveButton(positiveButtonLabel, DUMMY_LISTENER);
+        builder.setNegativeButton(android.R.string.cancel, DUMMY_LISTENER);
         dialog = builder.create();
         return dialog;
     }
