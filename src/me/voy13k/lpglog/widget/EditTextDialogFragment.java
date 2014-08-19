@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Usage:
@@ -92,6 +95,18 @@ public abstract class EditTextDialogFragment extends DialogFragment {
                         }
                     }
                 });
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (onPositiveButtonClick(editText.getText().toString())) {
+                        dialog.dismiss();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         editText.requestFocus();
         editText.selectAll();
         editText.post(new Runnable() {
