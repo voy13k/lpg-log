@@ -1,9 +1,5 @@
 package me.voy13k.lpglog;
 
-import me.voy13k.lpglog.data.DataStore;
-import me.voy13k.lpglog.data.DataStore.OnDataChangedListener;
-import me.voy13k.lpglog.util.TextViewHelper;
-import me.voy13k.lpglog.widget.EditTextDialogFragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,9 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class TotalsFragment extends Fragment implements OnDataChangedListener {
+import me.voy13k.lpglog.data.DataStore;
+import me.voy13k.lpglog.util.TextViewHelper;
+import me.voy13k.lpglog.widget.EditTextDialogFragment;
 
-    DataStore dataStore;
+public class TotalsFragment extends Fragment implements DataStore.OnDataChangedListener {
+
+    private DataStore dataStore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -36,24 +36,18 @@ public class TotalsFragment extends Fragment implements OnDataChangedListener {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.dataStore = ((Application) activity.getApplication()).getDataStore();
-        this.dataStore.register(this);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        this.dataStore.deregister(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         this.dataStore.deregister(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        this.dataStore.register(this);
         refresh();
     }
 

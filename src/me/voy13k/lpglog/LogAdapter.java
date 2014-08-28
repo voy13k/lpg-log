@@ -14,12 +14,12 @@ import me.voy13k.lpglog.util.TextViewHelper;
 
 public class LogAdapter extends ArrayAdapter<FillUpEntry> implements OnDataChangedListener {
 
-    private LayoutInflater layoutInflator;
+    private LayoutInflater layoutInflater;
     private DataStore dataStore;
 
     public LogAdapter(Activity activity) {
         super(activity, 0);
-        this.layoutInflator = activity.getLayoutInflater();
+        this.layoutInflater = activity.getLayoutInflater();
         dataStore = ((Application) activity.getApplication()).getDataStore();
         onDataChanged();
         dataStore.register(this);
@@ -34,7 +34,7 @@ public class LogAdapter extends ArrayAdapter<FillUpEntry> implements OnDataChang
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = layoutInflator.inflate(R.layout.list_item_log, parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_log, parent, false);
             fill(convertView, position);
         }
         return convertView;
@@ -55,6 +55,7 @@ public class LogAdapter extends ArrayAdapter<FillUpEntry> implements OnDataChang
 
     @Override
     public void onDataChanged() {
+        clear();
         addAll(dataStore.getFillUpEntries());
         notifyDataSetChanged();
     }

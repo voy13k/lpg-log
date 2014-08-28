@@ -46,12 +46,12 @@ public class DataStore {
 
     public void register(OnDataChangedListener listener) {
         this.listeners.put(listener, listener);
-        Log.i("DataStore", "listeners: " + listeners.size());
+        Log.d("DataStore", "listeners: " + listeners.size());
     }
     
     public void deregister(OnDataChangedListener listener) {
         this.listeners.remove(listener);
-        Log.i("DataStore", "listeners: " + listeners.size());
+        Log.d("DataStore", "listeners: " + listeners.size());
     }
     
     public List<FillUpEntry> getFillUpEntries() {
