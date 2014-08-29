@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import me.voy13k.lpglog.data.DataStore;
 import me.voy13k.lpglog.data.DataStore.OnDataChangedListener;
 import me.voy13k.lpglog.data.FillUpEntry;
@@ -55,21 +54,21 @@ public class LogAdapter extends ArrayAdapter<FillUpEntry> implements OnDataChang
         helper.setText(R.id.dateMonth, Format.DATE_MONTH, entry.getDate());
         helper.setText(R.id.gasConsupmtion, Format.CONSUMPTION, entry.getLpgConsumption());
         helper.setText(R.id.saving, Format.DOLLARS, entry.getSaving());
-        int year = getYear(entry);
         if (position > 0) {
             FillUpEntry previousEntry = getItem(position - 1);
-            if (year != getYear(previousEntry)) {
-                inflateYearStub(itemView, year);
+            if (getYear(entry) != getYear(previousEntry)) {
+                inflateYearStub(itemView);
+                helper.setText(R.id.dateYear, Format.DATE_YEAR, entry.getDate());
             }
         } else {
-            inflateYearStub(itemView, year);
+            inflateYearStub(itemView);
+            helper.setText(R.id.dateYear, Format.DATE_YEAR, entry.getDate());
         }
     }
 
-    private void inflateYearStub(View itemView, int year) {
+    private void inflateYearStub(View itemView) {
         ViewStub yearStub = (ViewStub) itemView.findViewById(R.id.yearStub);
-        TextView yearView = (TextView) yearStub.inflate();
-        yearView.setText(String.valueOf(year));
+        yearStub.inflate();
     }
 
     private int getYear(FillUpEntry entry) {
