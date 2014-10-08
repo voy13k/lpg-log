@@ -8,6 +8,7 @@ public class Application extends android.app.Application {
 
     public Application() {
         dataStore = new DataStore(this);
+        new DataDumper(this, dataStore);
     }
 
     public DataStore getDataStore() {
